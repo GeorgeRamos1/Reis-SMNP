@@ -53,6 +53,19 @@ namespace WinService.Business
         // Para a lista de dispositivos encontrados buscar o grupo de OIDs Correspondentes para leitura
         public IEnumerable<OIDs_Dispositivo> Captura_OID_Dispositivo(IEnumerable<EquipamentosDTO> Lista_Dispositivo)
         {
+
+            foreach (var Dispositivo in Lista_Dispositivo)
+            {
+                // PEsquisa se o Dispositivo Existe na lista de Equipamentos/Matriz/Modelo e se pertence a Empresa
+                //Se não existir utiliza-se da matriz padrão
+
+
+
+
+                
+            }
+            
+            
             return _repositoryDispositivo.Lista_OID_Dispositio_Rep();
 
         }

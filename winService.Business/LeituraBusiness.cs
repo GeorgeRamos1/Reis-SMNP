@@ -16,7 +16,7 @@ namespace WinService.Business
 
         public void Insere_Leitura(IEnumerable<OIDs_Dispositivo> Lista_Dispositivo)
         {
-
+            // 
         }
 
        
