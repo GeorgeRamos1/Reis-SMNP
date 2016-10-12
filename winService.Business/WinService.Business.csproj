@@ -89,6 +89,10 @@
       <Project>{b1b43f9e-ad55-422a-aae3-c5a56f308801}</Project>
       <Name>WinService.Repository</Name>
     </ProjectReference>
+    <ProjectReference Include="..\WinService.Utilities\WinService.Utilities.csproj">
+      <Project>{dd65cb46-08ae-4811-98ab-afcc389ca356}</Project>
+      <Name>WinService.Utilities</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

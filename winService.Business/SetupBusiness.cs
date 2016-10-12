@@ -14,7 +14,7 @@ namespace WinService.Business
 
         public Int32 Interval_Varredura()
         {
-            return 10000;
+            return 1000;
         }
 
     }

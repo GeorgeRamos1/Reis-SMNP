@@ -68,7 +68,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConfiguracaoSistemaDTO.cs" />
-    <Compile Include="Equipamentos.cs" />
+    <Compile Include="EquipamentosDTO.cs" />
+    <Compile Include="OidDTO.cs" />
     <Compile Include="OIDs_Dispositivo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

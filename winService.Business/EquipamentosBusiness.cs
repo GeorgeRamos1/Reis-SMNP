@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WinService.DTO;
 using WinService.Repository;
+using WinService.Utilities;
 
 namespace WinService.Business
 {
@@ -13,36 +14,51 @@ namespace WinService.Business
 
         Equipamentos_Repository _repositoryDispositivo = new Equipamentos_Repository();
         Leitura_Repository _repositoryLeitura = new Leitura_Repository();
- 
+        Snmp _SNMP = new Snmp();
         
         //Busca os Ip que estão respondendo na rede como impressora
-        public IEnumerable<Equipamentos>Captura_Ip_Dipositivos_Na_rede()
+        public IEnumerable<EquipamentosDTO>Captura_Ip_Dipositivos_Na_rede()
         {
-            return null;
+            //Captura o range de IP
+            String vRange = "192.168.1.";
+            String vOid_Serial = "1.3.6.1.2.1.43.5.1.1.17.1";
+            String vIp;
+            var lista_Dispostivos_encontrados = new List<EquipamentosDTO>();
+
+            var dt_inicio = DateTime.Now;
+            for (int i = 2; i < 255; i++)
+            {
+
+                vIp = vRange + i.ToString();
+
+                var result = _SNMP.capturaOID(vIp, vOid_Serial);
+
+                if (String.IsNullOrEmpty(result.Id)==false)
+                {
+                    var lista_pesq = new EquipamentosDTO();
+                    lista_pesq.IP = vIp;
+                    lista_pesq.Nr_Serie = result.Valor;
+
+                    lista_Dispostivos_encontrados.Add(lista_pesq);
+                }
+
+            }
+            var dt_Fim = DateTime.Now;
+
+            var Tempo_loop = dt_Fim - dt_inicio;
+
+            return lista_Dispostivos_encontrados;
         }
 
         // Para a lista de dispositivos encontrados buscar o grupo de OIDs Correspondentes para leitura
-        public IEnumerable<OIDs_Dispositivo> Captura_OID_Dispositivo(IEnumerable<Equipamentos> Lista_Dispositivo)
+        public IEnumerable<OIDs_Dispositivo> Captura_OID_Dispositivo(IEnumerable<EquipamentosDTO> Lista_Dispositivo)
         {
             return _repositoryDispositivo.Lista_OID_Dispositio_Rep();
 
         }
 
 
-// mudar para leitura
-        public void Captura_Leitura_Na_Rede()
-        {
-            //Regra: caso seja um dispositvo valido (Impressora), verifica se existe na lista de equipamentos
-            //Se for um equipamento de contrato busca modelo/Matriz, se não existir na lista cria com equipamento de outro
-            //usa a lista/matriz generica
 
-            var Lista_dispositivo_Encontrados = Captura_Ip_Dipositivos_Na_rede();
-
-            var Lista_Dispositivos_OID = Captura_OID_Dispositivo(Lista_dispositivo_Encontrados);
-
-
-
-        }
 
     }
 }

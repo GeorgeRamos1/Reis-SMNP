@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WinService.DTO
 {
-    public class Equipamentos
+    public class EquipamentosDTO
     {
         public String IP { get; set; }
         public String Nr_Serie { get; set; }
