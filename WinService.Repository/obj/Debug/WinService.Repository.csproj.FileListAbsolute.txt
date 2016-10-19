@@ -44,3 +44,5 @@ D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRe
 D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRead.RO\WinService.Repository\obj\Debug\WinService.Repository.csprojResolveAssemblyReference.cache
 D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRead.RO\WinService.Repository\obj\Debug\WinService.Repository.dll
 D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRead.RO\WinService.Repository\obj\Debug\WinService.Repository.pdb
+D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRead.RO\WinService.Repository\bin\Debug\WinService.Repository.dll.config
+D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRead.RO\WinService.Repository\bin\Debug\MySql.Data.Entity.EF6.dll

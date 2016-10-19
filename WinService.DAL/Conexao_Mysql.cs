@@ -21,13 +21,13 @@ namespace WinService.DAL
             try
             {
                 //Local
-                //  string path = "VM-WinServer";
+                  string path = "VM-WinServer";
 
                 //Servidor
-                string path = "192.168.2.107";
+              //  string path = "192.168.2.107";
 
                 //String de conexão
-                Con = new MySqlConnection("server=" + path + ";user id=root;password=123456;persistsecurityinfo=True;database=solae");
+                Con = new MySqlConnection("server=" + path + ";user id=root;password=123456;persistsecurityinfo=True;database=tarifador");
                 Con.Open();
 
             }

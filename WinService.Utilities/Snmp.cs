@@ -21,14 +21,14 @@ namespace WinService.Utilities
 
           
 
-            bool pingable = false;
-            Ping pinger = new Ping();
+     //       bool pingable = false;
+    //        Ping pinger = new Ping();
 
-            PingReply reply = pinger.Send(Ip);
-            pingable = reply.Status == IPStatus.Success;
+  //          PingReply reply = pinger.Send(Ip);
+  //          pingable = reply.Status == IPStatus.Success;
 
-            if (pingable)
-            {
+          //  if (pingable)
+        //    {
 
 
 
@@ -39,7 +39,7 @@ namespace WinService.Utilities
                                         new IPEndPoint(IPAddress.Parse(Ip), 161),
                                         new OctetString("public"),
                                         new List<Variable> { new Variable(new ObjectIdentifier(Oid)) },
-                                        30000);
+                                        600);
                     var valor = result[0].Data.ToString();
                     var id = result[0].Id.ToString();
                     dispositivoDTO.Valor = valor;
@@ -55,12 +55,12 @@ namespace WinService.Utilities
 
 
 
-            }
-            else
-            {
+          //  }
+       //     else
+    //        {
 
-                dispositivoDTO.Valor = "Nulo";
-            }
+      //          dispositivoDTO.Valor = "Nulo";
+    //        }
 
 
 

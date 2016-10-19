@@ -11,6 +11,7 @@ namespace WinService.DTO
         public String IP { get; set; }
         public String Nr_Serie { get; set; }
         public String Modelo { get; set; }
+        public String MAcAdress { get; set; }
 
     }
 }

@@ -26,9 +26,13 @@ namespace WinService.Business
             //Se for um equipamento de contrato busca modelo/Matriz, se não existir na lista cria com equipamento de outro
             //usa a lista/matriz generica
 
+            //procura impressoras
             var Lista_dispositivo_Encontrados = _BLLEquipamentos.Captura_Ip_Dipositivos_Na_rede();
 
             var Lista_OIDs_Capturados = _BLLEquipamentos.Captura_OID_Dispositivo(Lista_dispositivo_Encontrados);
+
+            // Faz a leitura dos oids na rede
+
 
             return Lista_OIDs_Capturados;
 

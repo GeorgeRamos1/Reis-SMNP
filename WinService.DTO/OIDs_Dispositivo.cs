@@ -11,7 +11,7 @@ namespace WinService.DTO
 
         public String IP { get; set; }
         public String Nr_Serie { get; set; }
-        public Guid OID { get; set; }
+        public String OID { get; set; }
         public String Descricao { get; set; }
         public String Hexa { get; set; }
         public String Valor { get; set; }
