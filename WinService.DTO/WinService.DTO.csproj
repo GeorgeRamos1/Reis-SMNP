@@ -67,10 +67,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Base\BaseOid.cs" />
     <Compile Include="ConfiguracaoSistemaDTO.cs" />
     <Compile Include="EquipamentosDTO.cs" />
+    <Compile Include="ModeloDTO.cs" />
     <Compile Include="OidDTO.cs" />
     <Compile Include="OIDs_Dispositivo.cs" />
+    <Compile Include="OID_Leitura.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

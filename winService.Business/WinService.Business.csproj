@@ -7,8 +7,8 @@
     <ProjectGuid>{19DEA6D4-A953-42BF-8FB1-4926A8EE8389}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>winService.Business</RootNamespace>
-    <AssemblyName>winService.Business</AssemblyName>
+    <RootNamespace>WinService.Business</RootNamespace>
+    <AssemblyName>WinService.Business</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -70,6 +70,7 @@
   <ItemGroup>
     <Compile Include="EquipamentosBusiness.cs" />
     <Compile Include="LeituraBusiness.cs" />
+    <Compile Include="ModeloBussiness.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SetupBusiness.cs" />
   </ItemGroup>

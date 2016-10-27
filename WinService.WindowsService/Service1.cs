@@ -62,7 +62,7 @@ namespace WinService.WindowsService
                 var Lista_Capturada = _BllLeitura.Captura_Leitura_Na_Rede();
 
                 //Insere na Tabela
-                _BllLeitura.Insere_Leitura(Lista_Capturada);
+                _BllLeitura.Grava_Leitura_No_DB(Lista_Capturada);
 
             }
 

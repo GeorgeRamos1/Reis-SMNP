@@ -19,18 +19,23 @@ namespace WinService.Repository
         public IEnumerable<OIDs_Dispositivo> getOIDsDispositivo(String vIp, String vNr_Serie)
         {
 
-
-            String Str = "SELECT A.numero_serie, E.OID ";
-            Str += " FROM tarifador.equipamentos A ,";
-            Str += " modelos B,";
-            Str += " modelos_oids_grupos C,";
-            Str += " oids_grupos_oids D,";
-            Str += " oids E";
-            Str += " WHERE A.id_modelo=B.id AND ";
-            Str += " A.id_modelo = C.id_modelo AND ";
-            Str += " C.ID_GRUPO = D.ID_GRUPO AND ";
-            Str += " D.ID_OID=E.ID AND";
-            Str += " A.numero_serie=@v1";
+            // O union é porque para alguns caso o grupo pode não ser criado
+            String Str = "SELECT A.id,A.numero_serie, E.OID";
+            Str += " FROM tarifador.equipamentos A left join";
+            Str += " modelos B on (A.id_modelo=B.id) left join ";
+            Str += " modelos_oids_grupos C on( A.id_modelo = C.id_modelo) Left join";
+            Str += " oids_grupos_oids D on ( C.ID_GRUPO = D.ID_GRUPO) left join";
+            Str += " oids E on(D.ID_OID=E.ID)";
+            Str += " WHERE  A.numero_serie=@v1  ";
+            Str += " union  ";
+            Str += " SELECT A.id,";
+            Str += " A.numero_serie,";
+            Str += " D.OID ";
+            Str += " FROM tarifador.equipamentos A left Join ";
+            Str += " tarifador.modelos B on (A.id_modelo = B.id) left join";
+            Str += " tarifador.modelos_oids C on ( B.id =C.id_modelo) left join";
+            Str += " oids D  on (C.Id_Oid =D.id)";
+            Str += " WHERE  A.numero_serie=@v1";
 
 
             var lista_OID_Capturado = new List<OIDs_Dispositivo>();
@@ -53,6 +58,8 @@ namespace WinService.Repository
                     lista_Oid.IP = vIp;
                     lista_Oid.OID = Dr["oid"].ToString();
                     lista_Oid.Nr_Serie = vNr_Serie;
+                    lista_Oid.maq_contrato = "SIM";
+                    lista_Oid.Id_equipamento = Dr["Id"].ToString();
 
                     //Adiciona na lista
 
@@ -74,7 +81,73 @@ namespace WinService.Repository
         }
 
 
+        public String Cria_Dispositivo(EquipamentosDTO vDadosDispositivo)
+        {
+            String Retorno = "";
+            try
+            {
+                AbrirConexao();
+                Cmd = new MySqlCommand();
+                Cmd.Connection = Con;
 
+                String SrtSql = "INSERT INTO `tarifador`.`equipamentos`";
+
+                SrtSql += " (`id`,";
+                SrtSql += "`Id_cliente`,";
+                SrtSql += "`Id_Modelo`,";
+                SrtSql += "`numero_serie`,";
+                SrtSql += "`ip_atual`,";
+                SrtSql += "`contrato`)";
+                SrtSql += "VALUES ";
+
+                SrtSql += " (uuid(),";
+                SrtSql += " @v2,";
+                SrtSql += " @v3,";
+                SrtSql += " @v4,";
+                SrtSql += " @v5,";
+                SrtSql += " @v6)";
+
+                Cmd.CommandText = SrtSql;
+
+                Cmd.Parameters.AddWithValue("@v2", vDadosDispositivo.Id_cliente);
+                Cmd.Parameters.AddWithValue("@v3", vDadosDispositivo.Modelo);
+                Cmd.Parameters.AddWithValue("@v4", vDadosDispositivo.Nr_Serie);
+                Cmd.Parameters.AddWithValue("@v5", vDadosDispositivo.IP);
+                Cmd.Parameters.AddWithValue("@v6", vDadosDispositivo.maq_contrato);
+
+                Cmd.ExecuteNonQuery();
+
+                String str2 = "SELECT `id` FROM `tarifador`.`equipamentos` WHERE `numero_serie`='" + vDadosDispositivo.Nr_Serie + "'";
+                Cmd = new MySqlCommand(str2, Con);
+                Dr = Cmd.ExecuteReader();
+
+                var resultado = Dr.HasRows;
+
+                if (resultado == true)
+                {
+                    //Se Ok retorna o numero do registro criado
+                    while (Dr.Read())
+                    {
+                        Retorno = Convert.ToString(Dr["id"]);
+
+                    }
+                    Dr.Close();
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("Erro ao Inserir Modelo " + ex.Message);
+
+            }
+            finally
+            {
+                FecharConexao();
+            }
+
+            return Retorno;
+        }
 
 
 
