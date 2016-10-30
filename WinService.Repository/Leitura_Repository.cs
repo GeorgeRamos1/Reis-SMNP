@@ -37,7 +37,7 @@ String cliente_desconhecido = "8609F87D-4BC4-4D70-8792-EE429F160A61";
 
                 SrtSql += " (uuid(),";
                 SrtSql += " @v2,";
-                SrtSql += " @v3,";
+                SrtSql += "CapturaID_Oid( @v3),";// função do DB para capturar o Id do OID
                 SrtSql += " @v4,";
                 SrtSql += "now())";
 

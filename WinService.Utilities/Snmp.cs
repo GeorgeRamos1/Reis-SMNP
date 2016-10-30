@@ -46,9 +46,9 @@ namespace WinService.Utilities
                     dispositivoDTO.Id = id;
 
                 }
-                catch (Exception)
+                catch (Exception )
                 {
-
+                   // throw new Exception("Erro ao Inserir Modelo " + ex.Message);
                     dispositivoDTO.Valor = "Nulo";
 
                 }

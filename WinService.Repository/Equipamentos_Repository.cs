@@ -58,7 +58,7 @@ namespace WinService.Repository
                     lista_Oid.IP = vIp;
                     lista_Oid.OID = Dr["oid"].ToString();
                     lista_Oid.Nr_Serie = vNr_Serie;
-                    lista_Oid.maq_contrato = "SIM";
+                   // lista_Oid.maq_contrato = "SIM";
                     lista_Oid.Id_equipamento = Dr["Id"].ToString();
 
                     //Adiciona na lista

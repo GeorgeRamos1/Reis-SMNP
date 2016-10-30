@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace WinService.DTO
 {
-    public class OIDs_Dispositivo : EquipamentosDTO
+    public class OIDs_Dispositivo : Base.BaseOid
     {
         
         //public String IP { get; set; }
       //  public String Nr_Serie { get; set; }
-        public String OID { get; set; }
+      //  public String OID { get; set; }
         public String Descricao { get; set; }
         public String Hexa { get; set; }
-        public String Id_equipamento { get; set; }
+      //  public String Id_equipamento { get; set; }
        
 
 
