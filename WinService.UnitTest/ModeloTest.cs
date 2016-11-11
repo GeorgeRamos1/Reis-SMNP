@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
-using WinService.Business;
+//using WinService.Business;
 using WinService.DTO;
 namespace WinService.UnitTest
 {
@@ -13,17 +13,17 @@ namespace WinService.UnitTest
         [TestFixture]
         public sealed class LeituraTest
         {
-            ModeloBussiness _BLLModelo = new ModeloBussiness();
+            //ModeloBussiness _BLLModelo = new ModeloBussiness();
 
-            [Test]
-            public ModeloDTO Testar_Captura_De_OID_Dispositivo()
-            {
-                var resultado = _BLLModelo.PesquisaModelo("0");
+            //[Test]
+            //public ModeloDTO Testar_Captura_De_OID_Dispositivo()
+            //{
+            //    var resultado = _BLLModelo.PesquisaModelo("0");
 
-                return resultado;
+            //    return resultado;
 
 
-            }
+           // }
 
 
         }

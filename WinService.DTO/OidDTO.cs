@@ -12,5 +12,7 @@ namespace WinService.DTO
 
         public String Valor { get; set; }
 
+        public String Valor_Byte { get; set; }
+
     }
 }

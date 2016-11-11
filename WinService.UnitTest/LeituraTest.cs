@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
-using WinService.Business;
+//using WinService.Business;
 
 namespace WinService.UnitTest
 { 
@@ -13,13 +13,13 @@ namespace WinService.UnitTest
     [TestFixture]
     public sealed class LeituraTest
     {
-        WinService.Business.EquipamentosBusiness negocioOID = new EquipamentosBusiness();
+        //WinService.Business.EquipamentosBusiness negocioOID = new EquipamentosBusiness();
        
-        [Test]
-        public void Testar_Captura_De_OID_Dispositivo()
-        {
+        //[Test]
+        //public void Testar_Captura_De_OID_Dispositivo()
+        //{
 
-            String vIP = "192.168.100.1";
+        //    String vIP = "192.168.100.1";
          
 
            // var dadosIp = negocioOID.Captura_OID_Dispositivo(vIP);
@@ -32,7 +32,7 @@ namespace WinService.UnitTest
             //}
 
 
-        }
+       // }
      
 
     }

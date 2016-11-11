@@ -16,26 +16,29 @@ namespace WinService.Repository
 
 
 
-        public IEnumerable<OIDs_Dispositivo> getOIDsDispositivo(String vIp, String vNr_Serie)
+        public IEnumerable<OIDs_Dispositivo> getOIDsDispositivo(String vIp, String vMacAddress)
         {
 
             // O union é porque para alguns caso o grupo pode não ser criado
-            String Str = "SELECT A.id,A.numero_serie, E.OID";
+            String Str = "SELECT Id,numero_serie,max(OID) as Oid FROM (";
+            Str += " SELECT A.id as ID,A.numero_serie as numero_serie, E.OID as OID";
             Str += " FROM tarifador.equipamentos A left join";
             Str += " modelos B on (A.id_modelo=B.id) left join ";
             Str += " modelos_oids_grupos C on( A.id_modelo = C.id_modelo) Left join";
             Str += " oids_grupos_oids D on ( C.ID_GRUPO = D.ID_GRUPO) left join";
             Str += " oids E on(D.ID_OID=E.ID)";
-            Str += " WHERE  A.numero_serie=@v1  ";
+            Str += " WHERE  A.mac_address=@v1  ";
             Str += " union  ";
-            Str += " SELECT A.id,";
-            Str += " A.numero_serie,";
-            Str += " D.OID ";
+            Str += " SELECT A.id as ID,";
+            Str += " A.numero_serie as numero_serie,";
+            Str += " D.OID as OID ";
             Str += " FROM tarifador.equipamentos A left Join ";
             Str += " tarifador.modelos B on (A.id_modelo = B.id) left join";
             Str += " tarifador.modelos_oids C on ( B.id =C.id_modelo) left join";
             Str += " oids D  on (C.Id_Oid =D.id)";
-            Str += " WHERE  A.numero_serie=@v1";
+            Str += " WHERE  A.mac_address=@v1";
+            Str += " ) tab3";
+            Str += " group by Id,numero_serie";
 
 
             var lista_OID_Capturado = new List<OIDs_Dispositivo>();
@@ -44,7 +47,7 @@ namespace WinService.Repository
             {
                 AbrirConexao();
                 Cmd = new MySqlCommand(Str, Con);
-                Cmd.Parameters.AddWithValue("@v1", vNr_Serie);
+                Cmd.Parameters.AddWithValue("@v1", vMacAddress);
 
                 Dr = Cmd.ExecuteReader();
 
@@ -57,8 +60,8 @@ namespace WinService.Repository
 
                     lista_Oid.IP = vIp;
                     lista_Oid.OID = Dr["oid"].ToString();
-                    lista_Oid.Nr_Serie = vNr_Serie;
-                   // lista_Oid.maq_contrato = "SIM";
+                    lista_Oid.Nr_Serie = Dr["numero_serie"].ToString();
+                    lista_Oid.Mac_address = vMacAddress;
                     lista_Oid.Id_equipamento = Dr["Id"].ToString();
 
                     //Adiciona na lista
@@ -97,7 +100,8 @@ namespace WinService.Repository
                 SrtSql += "`Id_Modelo`,";
                 SrtSql += "`numero_serie`,";
                 SrtSql += "`ip_atual`,";
-                SrtSql += "`contrato`)";
+                SrtSql += "`contrato`,";
+                SrtSql += "`mac_address`)";
                 SrtSql += "VALUES ";
 
                 SrtSql += " (uuid(),";
@@ -105,7 +109,8 @@ namespace WinService.Repository
                 SrtSql += " @v3,";
                 SrtSql += " @v4,";
                 SrtSql += " @v5,";
-                SrtSql += " @v6)";
+                SrtSql += " @v6,";
+                SrtSql += " @v7)";
 
                 Cmd.CommandText = SrtSql;
 
@@ -114,6 +119,7 @@ namespace WinService.Repository
                 Cmd.Parameters.AddWithValue("@v4", vDadosDispositivo.Nr_Serie);
                 Cmd.Parameters.AddWithValue("@v5", vDadosDispositivo.IP);
                 Cmd.Parameters.AddWithValue("@v6", vDadosDispositivo.maq_contrato);
+                Cmd.Parameters.AddWithValue("@v7", vDadosDispositivo.Mac_address);
 
                 Cmd.ExecuteNonQuery();
 

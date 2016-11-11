@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using WinService.DTO;
 using WinService.Repository;
 using WinService.Utilities;
-
+using System.Threading;
 
 namespace WinService.Business
 {
@@ -90,5 +90,7 @@ namespace WinService.Business
 
             return ListaOidLidos;
         }
+
+       
     }
 }

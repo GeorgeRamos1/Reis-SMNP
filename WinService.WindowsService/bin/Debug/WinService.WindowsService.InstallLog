@@ -1,0 +1,37 @@
+﻿Instalando o assembly 'D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRead.RO\WinService.WindowsService\bin\Debug\WinService.WindowsService.exe'.
+Parâmetros afetados são:
+   logtoconsole = 
+   logfile = D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRead.RO\WinService.WindowsService\bin\Debug\WinService.WindowsService.InstallLog
+   assemblypath = D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRead.RO\WinService.WindowsService\bin\Debug\WinService.WindowsService.exe
+Instalando o serviço Agent Reader_RO...
+Criando a origem de EventLog Agent Reader_RO no log Application...
+Revertendo o assembly 'D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRead.RO\WinService.WindowsService\bin\Debug\WinService.WindowsService.exe'.
+Parâmetros afetados são:
+   logtoconsole = 
+   logfile = D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRead.RO\WinService.WindowsService\bin\Debug\WinService.WindowsService.InstallLog
+   assemblypath = D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRead.RO\WinService.WindowsService\bin\Debug\WinService.WindowsService.exe
+Restaurando o log de eventos para o estado anterior da origem Agent Reader_RO.
+Ocorreu uma exceção durante a fase de reversão do instalador System.Diagnostics.EventLogInstaller.
+System.Security.SecurityException: Fonte não encontrada, mas alguns ou todos os logs de evento não puderam ser pesquisados. Logs inacessíveis: Security.
+Ocorreu uma exceção durante a fase de reversão da instalação. Essa exceção será ignorada e a reversão continuará. Mas talvez o computador não reverta totalmente para o estado inicial após a conclusão da reversão.
+Instalando o assembly 'D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRead.RO\WinService.WindowsService\bin\Debug\WinService.WindowsService.exe'.
+Parâmetros afetados são:
+   logtoconsole = 
+   logfile = D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRead.RO\WinService.WindowsService\bin\Debug\WinService.WindowsService.InstallLog
+   assemblypath = D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRead.RO\WinService.WindowsService\bin\Debug\WinService.WindowsService.exe
+Instalando o serviço Agent Reader_RO...
+Serviço Agent Reader_RO foi instalado com êxito.
+Criando a origem de EventLog Agent Reader_RO no log Application...
+Confirmando o assembly 'D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRead.RO\WinService.WindowsService\bin\Debug\WinService.WindowsService.exe'.
+Parâmetros afetados são:
+   logtoconsole = 
+   logfile = D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRead.RO\WinService.WindowsService\bin\Debug\WinService.WindowsService.InstallLog
+   assemblypath = D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRead.RO\WinService.WindowsService\bin\Debug\WinService.WindowsService.exe
+Desinstalando o assembly 'D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRead.RO\WinService.WindowsService\bin\Debug\WinService.WindowsService.exe'.
+Parâmetros afetados são:
+   logtoconsole = 
+   logfile = D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRead.RO\WinService.WindowsService\bin\Debug\WinService.WindowsService.InstallLog
+   assemblypath = D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRead.RO\WinService.WindowsService\bin\Debug\WinService.WindowsService.exe
+Removendo a origem do EventLog Agent Reader_RO.
+Serviço Agent Reader_RO está sendo removido do sistema...
+Serviço Agent Reader_RO foi removido com êxito do sistema.

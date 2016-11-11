@@ -32,7 +32,7 @@ namespace WinService.WindowsService
 
             // Depois de debugar basta compilar em Release e instalar para funcionar normalmente.
 
-            Service1 service = new Service1();
+           Service1 service = new Service1();
 
             // Chamada do seu método para Debug.
 

@@ -21,17 +21,19 @@ namespace WinService.Business
         public IEnumerable<EquipamentosDTO> Captura_Ip_Dipositivos_Na_rede()
         {
             //Captura o range de IP
-            String vRange = "10.0.0.";
-            String vOid_Serial = "1.3.6.1.2.1.43.5.1.1.17.1";
-            String vOid_Mac = "1.3.6.1.2.1.2.2.1.6.1";
-            //  String vOid_Model = "1.3.6.1.2.1.43.5.1.1.16.1";
-            String vOid_Model = "1.3.6.1.2.1.25.3.2.1.3.1";
-            String vOid_prn = "1.3.6.1.2.1.43.5.1.1.1.1";
+            String vRange = Global.Faixa_Ip;
+            String vOid_Serial = Global.Oid_serial ; //"1.3.6.1.2.1.43.5.1.1.17.1"
+            String vOid_Mac = Global.Oid_mac; // "1.3.6.1.2.1.2.2.1.6.1";
+
+            String vOid_Model = Global.Oid_modelo; // "1.3.6.1.2.1.25.3.2.1.3.1";
+            String vOid_prn = Global.Oid_tipo_impressora; // "1.3.6.1.2.1.43.5.1.1.1.1";
+
+
             String vIp;
             var lista_Dispostivos_encontrados = new List<EquipamentosDTO>();
 
             var dt_inicio = DateTime.Now;
-            for (int i = 30; i <255; i++)
+            for (int i = Global.Inicio_faixa; i <Global.Fim_faixa; i++)
             {
 
                 vIp = vRange + i.ToString();
@@ -42,18 +44,24 @@ namespace WinService.Business
                 {
                     var lista_pesq = new EquipamentosDTO();
 
+
                     var vNrSerie = _SNMP.capturaOID(vIp, vOid_Serial);
-                    // var vMac = _SNMP.capturaOID(vIp, vOid_Mac);
+
+
+
+                    var vMac = _SNMP.capturaOID(vIp, vOid_Mac);
                     var VModel = _SNMP.capturaOID(vIp, vOid_Model);
 
                     lista_pesq.IP = vIp;
                     lista_pesq.Nr_Serie = vNrSerie.Valor;
-                    //    lista_pesq.MAcAdress = vMac.Valor;
+                    lista_pesq.Mac_address = vMac.Valor_Byte.Substring(6);
                     lista_pesq.Modelo = VModel.Valor;
 
 
                     lista_Dispostivos_encontrados.Add(lista_pesq);
                 }
+
+
 
             }
             var dt_Fim = DateTime.Now;
@@ -77,18 +85,18 @@ namespace WinService.Business
                 // PEsquisa se o Dispositivo Existe na lista de Equipamentos/Matriz/Modelo e se pertence a Empresa
                 //Se não existir utiliza-se da matriz padrão
 
-                var Dispositivos_Encontrados = _repositoryDispositivo.getOIDsDispositivo(Dispositivo.IP, Dispositivo.Nr_Serie);
+                var Dispositivos_Encontrados = _repositoryDispositivo.getOIDsDispositivo(Dispositivo.IP, Dispositivo.Mac_address);
 
                 //Caso não seja encontrado nenhum registro, criar com  OID padrão para leitura.
                 //Salva registro no cadastro de equipamentos
                 if (Dispositivos_Encontrados.Count() == 0)
                 {
                     //Insere o equipamento na lista para informação, porém não faz parte do contrato
-                    var Id_Dispositivo_Retornado = Insere_Equipamento(Dispositivo.IP, Dispositivo.Modelo, Dispositivo.Nr_Serie, "NAO");
+                    var Id_Dispositivo_Retornado = Insere_Equipamento(Dispositivo.IP, Dispositivo.Modelo, Dispositivo.Nr_Serie, "NAO", Dispositivo.Mac_address);
 
 
-                    lista_OID_Lidos = new List<OIDs_Dispositivo> { new OIDs_Dispositivo { IP = Dispositivo.IP, Nr_Serie = Dispositivo.Nr_Serie, OID = "1.3.6.1.2.1.43.10.2.1.4.1.1", maq_contrato = "NAO", Id_equipamento = Id_Dispositivo_Retornado } };
-
+                    lista_OID_Lidos = new List<OIDs_Dispositivo> { new OIDs_Dispositivo { IP = Dispositivo.IP, Nr_Serie = Dispositivo.Nr_Serie, OID =Global.Oid_contador_geral,  maq_contrato = "NAO", Id_equipamento = Id_Dispositivo_Retornado, Mac_address = Dispositivo.Mac_address } };
+                    //"1.3.6.1.2.1.43.10.2.1.4.1.1",
 
                 }
                 else
@@ -101,8 +109,10 @@ namespace WinService.Business
                        
                         item_capturado.IP = item_dispositivo.IP;
                         item_capturado.Nr_Serie = item_dispositivo.Nr_Serie;
+                        item_capturado.Mac_address = item_dispositivo.Mac_address;
+
                         if (String.IsNullOrEmpty(item_dispositivo.OID) == true)
-                        { item_capturado.OID = "1.3.6.1.2.1.43.10.2.1.4.1.1"; }
+                        { item_capturado.OID = Global.Oid_contador_geral; }
                         else
                         {
                             item_capturado.OID = item_dispositivo.OID;
@@ -127,10 +137,10 @@ namespace WinService.Business
         }
 
         //Insere no DB os equipamentos lidos na rede mas não constam no DB
-        public String Insere_Equipamento(String IP, String Modelo, String NS, String contrato)
+        public String Insere_Equipamento(String IP, String Modelo, String NS, String Contrato, String vMAc_address)
         {
             //busca o ID do cliente instalado 
-            String vId_Cliente = "6aa3d5f0-9056-11e6-bc34-00155d019604";
+            String vId_Cliente = Global.Id_cliente;
             String vId_fabricante = "00000000-0000-0000-00000-000000000000";
             var pesquisa_modelo = _ModeloRepository.Pesquisa_Modelo(Modelo);
             String vId_Modelo;
@@ -150,10 +160,11 @@ namespace WinService.Business
             }
 
             Resumo_Dispositivo.IP = IP;
-            Resumo_Dispositivo.maq_contrato = contrato;
+            Resumo_Dispositivo.maq_contrato = Contrato;
             Resumo_Dispositivo.Nr_Serie = NS;
             Resumo_Dispositivo.Id_cliente = vId_Cliente;
             Resumo_Dispositivo.Modelo = vId_Modelo;
+            Resumo_Dispositivo.Mac_address = vMAc_address;
 
 
             // Criar dispositivo

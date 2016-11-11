@@ -39,11 +39,12 @@ namespace WinService.Utilities
                                         new IPEndPoint(IPAddress.Parse(Ip), 161),
                                         new OctetString("public"),
                                         new List<Variable> { new Variable(new ObjectIdentifier(Oid)) },
-                                        600);
+                                        1200);
                     var valor = result[0].Data.ToString();
                     var id = result[0].Id.ToString();
                     dispositivoDTO.Valor = valor;
                     dispositivoDTO.Id = id;
+                    dispositivoDTO.Valor_Byte = AddressBytesToString(result[0].Data.ToBytes());
 
                 }
                 catch (Exception )
@@ -68,6 +69,12 @@ namespace WinService.Utilities
 
 
 
+        }
+
+        private static string AddressBytesToString(byte[] addressBytes)
+        {
+            return string.Join(":", (from b in addressBytes
+                                     select b.ToString("X2")).ToArray());
         }
     }
 }

@@ -70,6 +70,7 @@
     <Compile Include="Base\BaseOid.cs" />
     <Compile Include="ConfiguracaoSistemaDTO.cs" />
     <Compile Include="EquipamentosDTO.cs" />
+    <Compile Include="Global.cs" />
     <Compile Include="ModeloDTO.cs" />
     <Compile Include="OidDTO.cs" />
     <Compile Include="OIDs_Dispositivo.cs" />

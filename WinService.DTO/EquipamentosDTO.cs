@@ -12,7 +12,7 @@ namespace WinService.DTO
         public String Id_cliente { get; set; }
        // public String Nr_Serie { get; set; }
         public String Modelo { get; set; }
-        public String MAcAdress { get; set; }
+        
         
     }
 }
