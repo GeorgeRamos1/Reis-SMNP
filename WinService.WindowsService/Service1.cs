@@ -10,7 +10,8 @@ using System.Threading.Tasks;
 using WinService.Business;
 using System.Threading;
 using WinService.DTO;
-
+using System.Configuration;
+using System.ServiceProcess;
 
 namespace WinService.WindowsService
 {
@@ -42,7 +43,7 @@ namespace WinService.WindowsService
 
             //rodar serviço que será executado
             linhaDeExecucao.Start();
-
+            
         }
 
         protected override void OnStop()
@@ -77,9 +78,9 @@ namespace WinService.WindowsService
 
         public void InicializaVariaveisGlobais()
         {
-
+            
             //Tempo do ciclo de leitura 1s=1000
-            var Interval = Properties.Settings.Default.ciclo;
+            var Interval = ConfigurationManager.AppSettings["ciclo"];
             if (String.IsNullOrEmpty(Interval))
             {
                 Global.Ciclo = 1000;
@@ -90,7 +91,9 @@ namespace WinService.WindowsService
             }
 
             // Faixa de Ip
-            var Faixa = Properties.Settings.Default.faixa_ip;
+
+            var Faixa = ConfigurationManager.AppSettings["faixa_ip"];
+           // var Faixa = Properties.Settings.Default.faixa_ip;
             if (String.IsNullOrEmpty(Faixa))
             {
                 Global.Faixa_Ip = "192.168.0";
@@ -101,7 +104,7 @@ namespace WinService.WindowsService
             }
 
             //Inicio da faixa de ip
-            var Ini = Properties.Settings.Default.faixa_ini;
+            var Ini = ConfigurationManager.AppSettings["faixa_ini"];
 
             if (String.IsNullOrEmpty(Ini))
             {
@@ -113,7 +116,7 @@ namespace WinService.WindowsService
             }
 
             //fim da faixa de ip
-            var Fim = Properties.Settings.Default.faixa_fim;
+            var Fim = ConfigurationManager.AppSettings["faixa_fim"];
 
             if (String.IsNullOrEmpty(Fim))
             {
@@ -121,11 +124,11 @@ namespace WinService.WindowsService
             }
             else
             {
-                Global.Inicio_faixa = Convert.ToInt32(Fim);
+                Global.Fim_faixa = Convert.ToInt32(Fim);
             }
 
             //Oid do Numero Serie
-            var Oid_Sn = Properties.Settings.Default.oid_serial;
+            var Oid_Sn =ConfigurationManager.AppSettings["oid_serial"];
             if (String.IsNullOrEmpty(Oid_Sn))
             {
                 Global.Oid_serial = "1.3.6.1.2.1.43.5.1.1.17.1";
@@ -136,7 +139,7 @@ namespace WinService.WindowsService
             }
 
             //Oid do modelo
-            var Oid_Model = Properties.Settings.Default.oid_modelo;
+            var Oid_Model = ConfigurationManager.AppSettings["oid_modelo"];
             if (String.IsNullOrEmpty(Oid_Model))
             {
                 Global.Oid_modelo = "1.3.6.1.2.1.25.3.2.1.3.1";
@@ -147,7 +150,7 @@ namespace WinService.WindowsService
             }
 
             //Oid do serial
-            var Oid_Mac = Properties.Settings.Default.oid_mac;
+            var Oid_Mac = ConfigurationManager.AppSettings["oid_mac"];
             if (String.IsNullOrEmpty(Oid_Mac))
             {
                 Global.Oid_mac = "1.3.6.1.2.1.2.2.1.6.1";
@@ -158,7 +161,7 @@ namespace WinService.WindowsService
             }
 
             //Oid para definir se é impressora
-            var Oid_e_impressora = Properties.Settings.Default.oid_impressora;
+            var Oid_e_impressora = ConfigurationManager.AppSettings["oid_impressora"];
             if (String.IsNullOrEmpty(Oid_e_impressora))
             {
                 Global.Oid_tipo_impressora = "1.3.6.1.2.1.43.5.1.1.1.1";
@@ -169,7 +172,7 @@ namespace WinService.WindowsService
             }
 
             //Oid para contador geral
-            var Oid_contador = Properties.Settings.Default.oid_contador;
+            var Oid_contador = ConfigurationManager.AppSettings["oid_contador"];
             if (String.IsNullOrEmpty(Oid_contador))
             {
                 Global.Oid_contador_geral = "1.3.6.1.2.1.43.10.2.1.4.1.1";
@@ -182,7 +185,7 @@ namespace WinService.WindowsService
             
 
  //Id do cliente
-            var Id_Cliente1 = Properties.Settings.Default.Id_cliente;
+            var Id_Cliente1 = ConfigurationManager.AppSettings["Id_cliente"];
             if (String.IsNullOrEmpty(Id_Cliente1))
             {
                 Global.Id_cliente = "6aa3d5f0-9056-11e6-bc34-00155d019604";
@@ -191,8 +194,30 @@ namespace WinService.WindowsService
             {
                 Global.Id_cliente = Oid_contador;
             }
-
-
+            //Id do cliente
+            var Tempo_espera = ConfigurationManager.AppSettings["TimeOut_snpm"];
+            if (String.IsNullOrEmpty(Tempo_espera))
+            {
+                Global.TimeOut = "300";
+            }
+            else
+            {
+                Global.TimeOut = Tempo_espera;
+            }
+            //String de conexão
+            var conn = ConfigurationManager.AppSettings["Conn_db"];
+            if (String.IsNullOrEmpty(conn))
+            {
+                EventLog.WriteEntry("String de conexão não definida", EventLogEntryType.Warning);
+               
+            }
+            
         }
+
+
+
+
+
+  
     }
 }

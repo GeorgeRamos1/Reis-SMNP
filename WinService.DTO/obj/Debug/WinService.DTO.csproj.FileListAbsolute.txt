@@ -31,6 +31,6 @@ D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRe
 D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRead.RO\WinService.DTO\bin\Debug\System.Web.WebPages.xml
 D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRead.RO\WinService.DTO\bin\Debug\System.Web.WebPages.Deployment.xml
 D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRead.RO\WinService.DTO\bin\Debug\System.Web.WebPages.Razor.xml
-D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRead.RO\WinService.DTO\obj\Debug\WinService.DTO.csprojResolveAssemblyReference.cache
 D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRead.RO\WinService.DTO\obj\Debug\WinService.DTO.dll
 D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRead.RO\WinService.DTO\obj\Debug\WinService.DTO.pdb
+D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRead.RO\WinService.DTO\obj\Debug\WinService.DTO.csprojResolveAssemblyReference.cache

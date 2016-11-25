@@ -32,15 +32,15 @@ namespace WinService.WindowsService
 
             // Depois de debugar basta compilar em Release e instalar para funcionar normalmente.
 
-           Service1 service = new Service1();
+          Service1 service = new Service1();
 
-            // Chamada do seu método para Debug.
+            // Chamada do método para Debug.
 
-            service.varrerArede();
+          service.varrerArede();
 
-            // Coloque sempre um breakpoint para o ponto de parada do seu código.
+            // Coloque sempre um breakpoint para o ponto de parada do código.
 
-            System.Threading.Thread.Sleep(System.Threading.Timeout.Infinite);
+           System.Threading.Thread.Sleep(System.Threading.Timeout.Infinite);
 
 #endif
 

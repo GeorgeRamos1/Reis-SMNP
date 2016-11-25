@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <configuration>
     <configSections>
-	
-	
+        <sectionGroup name="userSettings" type="System.Configuration.UserSettingsGroup, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" >
+            <section name="WinService.WindowsService.Properties.Settings" type="System.Configuration.ClientSettingsSection, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" allowExeDefinition="MachineToLocalUser" requirePermission="false" />
+        </sectionGroup>
     </configSections>
     <startup> 
         <supportedRuntime version="v4.0" sku=".NETFramework,Version=v4.6"/>
     </startup>
-
-	<appSettings>
+<appSettings>
 
 	<!-- Valor que define a faixa de Ip utilizada na rede -->
      <add key="faixa_ip" value="10.0.0." />
@@ -33,9 +33,8 @@
 	 <!-- define o tempo esperado para a leitura do snmp-->
      <add key="TimeOut_snpm" value="2400" />
 	 <!-- String de conexão do db -->
+	 <add key="Conn_db" value="server=VM-WinServer;user id=root;password=123456;persistsecurityinfo=True;database=tarifador" />
 	 
-	<!-- <add key="Conn_db" value="server=VM-WinServer;user id=root;password=123456;persistsecurityinfo=True;database=tarifador" />-->
-	 	 <add key="Conn_db" value="server=10.0.1.126;user id=teste;password=teste;persistsecurityinfo=True;database=tarifador" />
 <!--
 Para as colunas vazias o sitema utiliza valores internos pré-definidos
 faixa de ip =192.168.0
@@ -52,6 +51,4 @@ Conn_db não pode ser vazio
 -->	 
   </appSettings>
    
-	
-	
 </configuration>

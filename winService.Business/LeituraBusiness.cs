@@ -16,21 +16,24 @@ namespace WinService.Business
         Snmp _SNMP = new Snmp();
         EquipamentosBusiness _BLLEquipamentos = new EquipamentosBusiness();
         Leitura_Repository _repository_leitura = new Repository.Leitura_Repository();
+        Configuracao_Repository _repository_configuracao = new Configuracao_Repository();
 
         public void Grava_Leitura_No_DB(IEnumerable<OID_Leitura> Leituras_Dispositivos)
         {
-
+            
 
             foreach (var leitura in Leituras_Dispositivos)
             {
-                //se nã encontrar o OID usa o OID geral
-                //if (String.IsNullOrEmpty(leitura.OID))
-                //{
-                //    //tratar exceção
-                //    leitura.OID = "1.3.6.1.2.1.43.10.2.1.4.1.1";
-                //}
-                var retorno_inserir = _repository_leitura.Insere_Leitura(leitura);
+            
+                var Data_leitura_inserida = _repository_leitura.Insere_Leitura(leitura);
 
+                if (Data_leitura_inserida != null)
+                {
+                   
+                    // Atualiza a data da leitura
+
+                  var retornoDaatualizacao =  _repository_configuracao.AtualizaDataLeituraEmConfiguracaoCliente(Global.Id_cliente, Data_leitura_inserida, null);
+                }
 
                 //criar um log de falha no caso de erro na inserção
 

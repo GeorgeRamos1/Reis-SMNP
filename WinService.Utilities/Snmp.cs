@@ -30,7 +30,7 @@ namespace WinService.Utilities
           //  if (pingable)
         //    {
 
-
+            Int32 Intervalo = Convert.ToInt32( Global.TimeOut);
 
                 try
                 {
@@ -39,7 +39,7 @@ namespace WinService.Utilities
                                         new IPEndPoint(IPAddress.Parse(Ip), 161),
                                         new OctetString("public"),
                                         new List<Variable> { new Variable(new ObjectIdentifier(Oid)) },
-                                        1200);
+                                       Intervalo);
                     var valor = result[0].Data.ToString();
                     var id = result[0].Id.ToString();
                     dispositivoDTO.Valor = valor;

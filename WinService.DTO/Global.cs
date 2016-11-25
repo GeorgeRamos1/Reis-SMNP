@@ -18,5 +18,6 @@ namespace WinService.DTO
         public static String Oid_tipo_impressora { get; set; }
         public static String Oid_serial { get; set; }
         public static String Id_cliente { get; set; }
+        public static String TimeOut { get; set; }
     }
 }

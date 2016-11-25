@@ -13,15 +13,18 @@ namespace WinService.Repository
 {
     public class Leitura_Repository : Conexao_Mysql
     {
+        
 
-
-        public Int32 Insere_Leitura(OID_Leitura Leitura)
+        public DateTime? Insere_Leitura(OID_Leitura Leitura)
         {
-int resposta =0;
-String Retorno = "";
-String cliente_desconhecido = "8609F87D-4BC4-4D70-8792-EE429F160A61";
+
+
+
+            DateTime? data_leitura = DateTime.Now;
+            var resposta = data_leitura;
             try
             {
+               
                 AbrirConexao();
                 Cmd = new MySqlCommand();
                 Cmd.Connection = Con;
@@ -39,7 +42,7 @@ String cliente_desconhecido = "8609F87D-4BC4-4D70-8792-EE429F160A61";
                 SrtSql += " @v2,";
                 SrtSql += "CapturaID_Oid( @v3),";// função do DB para capturar o Id do OID
                 SrtSql += " @v4,";
-                SrtSql += "now())";
+                SrtSql += "@v5)";
 
                 Cmd.CommandText = SrtSql;
 
@@ -47,15 +50,17 @@ String cliente_desconhecido = "8609F87D-4BC4-4D70-8792-EE429F160A61";
                 Cmd.Parameters.AddWithValue("@v2", Leitura.Id_equipamento);
                 Cmd.Parameters.AddWithValue("@v3", Leitura.OID);
                 Cmd.Parameters.AddWithValue("@v4", Leitura.Valor);
+                Cmd.Parameters.AddWithValue("@v5", data_leitura);
+
                 Cmd.ExecuteNonQuery();
              
 
             }
-            catch (Exception ex)
+            catch (Exception )
             {
 
-                throw new Exception("Erro ao Inserir Modelo " + ex.Message);
-
+                //throw new Exception("Erro ao Inserir Modelo " + ex.Message);
+                resposta = null;
             }
             finally
             {
@@ -67,7 +72,7 @@ String cliente_desconhecido = "8609F87D-4BC4-4D70-8792-EE429F160A61";
 
 
 
-
+     
 
 
     }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
+using System.Configuration;
 
 namespace WinService.DAL
 {
@@ -18,6 +19,7 @@ namespace WinService.DAL
 
         protected void AbrirConexao()
         {
+            var Conn_str = ConfigurationManager.AppSettings["Conn_db"];
             try
             {
                 //Local
@@ -27,7 +29,7 @@ namespace WinService.DAL
               //  string path = "192.168.2.107";
 
                 //String de conexão
-                Con = new MySqlConnection("server=" + path + ";user id=root;password=123456;persistsecurityinfo=True;database=tarifador");
+                  Con = new MySqlConnection(Conn_str);
                 Con.Open();
 
             }
