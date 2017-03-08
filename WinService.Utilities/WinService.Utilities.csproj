@@ -47,8 +47,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Arquivos.cs" />
+    <Compile Include="Converts.cs" />
+    <Compile Include="LogEvento.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Snmp.cs" />
+    <Compile Include="TripleDES.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mono.Options\Mono.Options.csproj">

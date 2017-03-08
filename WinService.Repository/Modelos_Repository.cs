@@ -5,13 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using WinService.DAL;
 using WinService.DTO;
-using MySql.Data.MySqlClient;
+using System.Data.SQLite;
+using WinService.Utilities;
 
 namespace WinService.Repository
 {
-    public class Modelos_Repository : Conexao_Mysql
+    public class Modelos_Repository : Conexao_Sqlite
     {
-
+        LogEvento _log = new LogEvento();
         public ModeloDTO Pesquisa_Modelo(String Nome_Modelo)
         {
 
@@ -19,31 +20,34 @@ namespace WinService.Repository
             try
             {
                 AbrirConexao();
-                Cmd = new MySqlCommand("Select ID,Nome From tarifador.modelos where Nome=@v1", Con);
-                Cmd.Parameters.AddWithValue("@v1", Nome_Modelo);
-
-                Dr = Cmd.ExecuteReader();
-
-
-                var resultado = Dr.HasRows;
-                if (resultado == true)
+                using (Cmd = new SQLiteCommand("Select ID,Nome From modelos where Nome=@v1", Con))
                 {
-                    if (Dr.Read())
+                    Cmd.Parameters.AddWithValue("@v1", Nome_Modelo);
 
-                        lista_pesq.Id_Modelo = Convert.ToString(Dr["ID"]);
-                    lista_pesq.Nome_Modelo = Convert.ToString(Dr["Nome"]);
+                    Dr = Cmd.ExecuteReader();
 
 
+
+                    var resultado = Dr.HasRows;
+                    if (resultado == true)
+                    {
+                        if (Dr.Read())
+
+                            lista_pesq.Id_Modelo = Convert.ToString(Dr["ID"]);
+                        lista_pesq.Nome_Modelo = Convert.ToString(Dr["Nome"]);
+
+
+                    }
+                    Dr.Dispose();
+                    FecharConexao();
                 }
-
-
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
                 lista_pesq.Id_Modelo = "0";
                 lista_pesq.Nome_Modelo = "Erro";
-
+                _log.WriteEntry("Erro em getOIDsDispositivo :" + ex.Message.ToString(), System.Diagnostics.EventLogEntryType.Error);
             }
             finally
             {
@@ -60,47 +64,49 @@ namespace WinService.Repository
             try
             {
                 AbrirConexao();
-                Cmd = new MySqlCommand();
-                Cmd.Connection = Con;
-
-                String SrtSql = "INSERT INTO `tarifador`.`modelos`";
-
-                SrtSql += " (`id`,";
-                SrtSql += "`nome`,";
-                SrtSql += "`id_fabricante`)";
-                SrtSql += "VALUES ";
-
-                SrtSql += " (uuid(),";
-                SrtSql += " @v2,";
-                SrtSql += "@v3)";
-
-                Cmd.CommandText = SrtSql;
-
-
-                Cmd.Parameters.AddWithValue("@v2", Nome);
-                Cmd.Parameters.AddWithValue("@v3", Id_fabricante);
-
-                Cmd.ExecuteNonQuery();
-
-                String str2 = "SELECT `id` FROM `tarifador`.`modelos` AS last_id WHERE `nome`='"+ Nome+"'";
-                Cmd = new MySqlCommand(str2, Con);
-                Dr = Cmd.ExecuteReader();
-
-                var resultado = Dr.HasRows;
-
-                if (resultado == true)
+                using ( Cmd = new SQLiteCommand())
                 {
-                    //Se Ok retorna o numero do registro criado
-                    while (Dr.Read())
+                   
+                    Cmd.Connection = Con;
+
+                    String SrtSql = "INSERT INTO modelos";
+
+                    SrtSql += " (id,";
+                    SrtSql += "nome,";
+                    SrtSql += "id_fabricante)";
+                    SrtSql += "VALUES ";
+
+                    SrtSql += " ('" + Guid.NewGuid() + "',";
+                    SrtSql += " @v2,";
+                    SrtSql += "@v3)";
+
+                    Cmd.CommandText = SrtSql;
+
+
+                    Cmd.Parameters.AddWithValue("@v2", Nome);
+                    Cmd.Parameters.AddWithValue("@v3", Id_fabricante);
+
+                    Cmd.ExecuteNonQuery();
+
+                    String str2 = "SELECT id FROM modelos AS last_id WHERE nome='" + Nome + "'";
+                    Cmd = new SQLiteCommand(str2, Con);
+                    Dr = Cmd.ExecuteReader();
+
+                    var resultado = Dr.HasRows; if (resultado == true)
                     {
-                        Retorno = Convert.ToString(Dr["id"]);
+                        //Se Ok retorna o numero do registro criado
+                        while (Dr.Read())
+                        {
+                            Retorno = Convert.ToString(Dr["id"]);
 
+                        }
+                        Dr.Close();
                     }
-                    Dr.Close();
+                    Dr.Dispose();
+                    FecharConexao();
+
+                    
                 }
-
-
-
 
 
 
@@ -108,8 +114,8 @@ namespace WinService.Repository
             catch (Exception ex)
             {
 
-                throw new Exception("Erro ao Inserir Modelo " + ex.Message);
-               
+             //   throw new Exception("Erro ao Inserir Modelo " + ex.Message);
+                _log.WriteEntry("Erro ao Criar Modelo :" + ex.Message.ToString(), System.Diagnostics.EventLogEntryType.Error);
             }
             finally
             {
@@ -125,13 +131,13 @@ namespace WinService.Repository
             try
             {
                 AbrirConexao();
-                Cmd = new MySqlCommand();
+                Cmd = new SQLiteCommand();
                 Cmd.Connection = Con;
 
-                String SrtSql = "INSERT INTO `tarifador`.`modelos_oids`";
+                String SrtSql = "INSERT INTO modelos_oids";
                
-                SrtSql += "(`id_modelo`,";
-                SrtSql += "`id_oid`)";
+                SrtSql += "(id_modelo,";
+                SrtSql += "id_oid)";
                 SrtSql += "VALUES (";
                 SrtSql += " @v2,";
                 SrtSql += "@v3)";
@@ -148,8 +154,8 @@ namespace WinService.Repository
             catch (Exception ex)
             {
 
-                throw new Exception("Erro ao Inserir Modelos_oids " + ex.Message);
-
+              //  throw new Exception("Erro ao Inserir Modelos_oids " + ex.Message);
+                _log.WriteEntry("Erro ao Inserir Modelos_oids :" + ex.Message.ToString(), System.Diagnostics.EventLogEntryType.Error);
             }
             finally
             {

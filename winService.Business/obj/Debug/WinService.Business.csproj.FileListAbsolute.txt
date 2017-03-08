@@ -50,3 +50,5 @@ D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRe
 D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRead.RO\winService.Business\bin\Debug\SharpSnmpLib.Portable.xml
 D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRead.RO\winService.Business\bin\Debug\SharpSnmpLib.Full.xml
 D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRead.RO\winService.Business\bin\Debug\WinService.Business.dll.config
+D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRead.RO\winService.Business\bin\Debug\System.Data.SQLite.dll
+D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRead.RO\winService.Business\bin\Debug\System.Data.SQLite.xml

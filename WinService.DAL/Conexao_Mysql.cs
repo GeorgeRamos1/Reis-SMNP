@@ -5,11 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 using System.Configuration;
+using WinService.Utilities;
 
 namespace WinService.DAL
 {
     public class Conexao_Mysql
     {
+        LogEvento _log = new LogEvento();
+
         protected MySqlConnection Con; // faz a conexao
         protected MySqlCommand Cmd; // Escrever ou executar comanados
         protected MySqlDataReader Dr; //guarda regustros obtidos de querys
@@ -36,7 +39,9 @@ namespace WinService.DAL
             catch (Exception ex)
             {
 
-                throw new Exception(ex.Message);
+             //   throw new Exception(ex.Message);
+                _log.WriteEntry("Erro ao abrir conexao com o db :" + ex.Message.ToString(), System.Diagnostics.EventLogEntryType.Error);
+
             }
         }
 

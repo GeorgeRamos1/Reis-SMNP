@@ -12,11 +12,12 @@ using System.Threading;
 using WinService.DTO;
 using System.Configuration;
 using System.ServiceProcess;
-
+using WinService.Utilities;
 namespace WinService.WindowsService
 {
     public partial class Service1 : ServiceBase
     {
+        LogEvento _log = new LogEvento();
         EquipamentosBusiness _BLLEquipamentos = new EquipamentosBusiness();
         SetupBusiness _BLLSetup = new SetupBusiness();
         LeituraBusiness _BllLeitura = new LeituraBusiness();
@@ -32,7 +33,7 @@ namespace WinService.WindowsService
         protected override void OnStart(string[] args)
         {
 
-            EventLog.WriteEntry("teste de Serviço inicializado", EventLogEntryType.Warning);
+            EventLog.WriteEntry("Serviço captura de OID iniciado", EventLogEntryType.Warning);
 
             //cria o que será executado
             ThreadStart iniciarExecucao = new ThreadStart(varrerArede);
@@ -43,19 +44,20 @@ namespace WinService.WindowsService
 
             //rodar serviço que será executado
             linhaDeExecucao.Start();
-            
+
         }
 
         protected override void OnStop()
         {
-            EventLog.WriteEntry("teste de Serviço Interrompido", EventLogEntryType.Warning);
+            EventLog.WriteEntry("Serviço captura de OID Interrompido", EventLogEntryType.Warning);
+
         }
 
 
         // 1000= 1 segundo
         public void varrerArede()
         {
-
+            _log.WriteEntry("Varredura da Rede Iniciada :", System.Diagnostics.EventLogEntryType.Information);
             while (true)
             {
                 //    var Interval = _BLLSetup.Interval_Varredura();
@@ -65,12 +67,26 @@ namespace WinService.WindowsService
                 Thread.Sleep(Global.Ciclo);
 
 
-                //Captura a leitura na Rede
-                var Lista_Capturada = _BllLeitura.Captura_Leitura_Na_Rede();
 
-                //Insere na Tabela
-                _BllLeitura.Grava_Leitura_No_DB(Lista_Capturada);
+                //Aqui introduzimos o licienciamento.
+                Boolean ValidaLicienciamento = _BLLSetup.LicenciaPRG();
 
+                if (ValidaLicienciamento)
+                {
+
+                    //Captura a leitura na Rede
+                    var Lista_Capturada = _BllLeitura.Captura_Leitura_Na_Rede();
+
+                    //Insere na Tabela
+                    _BllLeitura.Grava_Leitura_No_DB(Lista_Capturada);
+                }
+                else
+                {
+                    Service1 servico = new Service1();
+                    servico.Stop();
+                    _log.WriteEntry("Varredura Interrompida por falta de licença :", System.Diagnostics.EventLogEntryType.Information);
+                }
+               
             }
 
 
@@ -78,7 +94,7 @@ namespace WinService.WindowsService
 
         public void InicializaVariaveisGlobais()
         {
-            
+
             //Tempo do ciclo de leitura 1s=1000
             var Interval = ConfigurationManager.AppSettings["ciclo"];
             if (String.IsNullOrEmpty(Interval))
@@ -93,7 +109,7 @@ namespace WinService.WindowsService
             // Faixa de Ip
 
             var Faixa = ConfigurationManager.AppSettings["faixa_ip"];
-           // var Faixa = Properties.Settings.Default.faixa_ip;
+            // var Faixa = Properties.Settings.Default.faixa_ip;
             if (String.IsNullOrEmpty(Faixa))
             {
                 Global.Faixa_Ip = "192.168.0";
@@ -128,7 +144,7 @@ namespace WinService.WindowsService
             }
 
             //Oid do Numero Serie
-            var Oid_Sn =ConfigurationManager.AppSettings["oid_serial"];
+            var Oid_Sn = ConfigurationManager.AppSettings["oid_serial"];
             if (String.IsNullOrEmpty(Oid_Sn))
             {
                 Global.Oid_serial = "1.3.6.1.2.1.43.5.1.1.17.1";
@@ -182,17 +198,17 @@ namespace WinService.WindowsService
                 Global.Oid_contador_geral = Oid_contador;
             }
 
-            
 
- //Id do cliente
+
+            //Id do cliente
             var Id_Cliente1 = ConfigurationManager.AppSettings["Id_cliente"];
             if (String.IsNullOrEmpty(Id_Cliente1))
             {
-                Global.Id_cliente = "6aa3d5f0-9056-11e6-bc34-00155d019604";
+                Global.Id_cliente = "99b062f8-d415-11e6-bfdc-00155d6eac04";
             }
             else
             {
-                Global.Id_cliente = Oid_contador;
+                Global.Id_cliente = Id_Cliente1;
             }
             //Id do cliente
             var Tempo_espera = ConfigurationManager.AppSettings["TimeOut_snpm"];
@@ -209,15 +225,24 @@ namespace WinService.WindowsService
             if (String.IsNullOrEmpty(conn))
             {
                 EventLog.WriteEntry("String de conexão não definida", EventLogEntryType.Warning);
-               
+
             }
-            
+
+            Global.Path_Cert = ConfigurationManager.AppSettings["Path_Cert"];
+
+            Global.Nr_contrato = ConfigurationManager.AppSettings["Nr_contrato"];
+
+            Global.IP_LIC = ConfigurationManager.AppSettings["IP"];
+
+
+
+
         }
 
 
 
 
 
-  
+
     }
 }

@@ -48,3 +48,15 @@ D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRe
 D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRead.RO\WinService.DAL\obj\Debug\WinService.DAL.dll
 D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRead.RO\WinService.DAL\obj\Debug\WinService.DAL.pdb
 D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRead.RO\WinService.DAL\obj\Debug\WinService.ConectarDados.csprojResolveAssemblyReference.cache
+D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRead.RO\WinService.DAL\bin\Debug\WinService.Utilities.dll
+D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRead.RO\WinService.DAL\bin\Debug\WinService.DTO.dll
+D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRead.RO\WinService.DAL\bin\Debug\SharpSnmpLib.Portable.dll
+D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRead.RO\WinService.DAL\bin\Debug\SharpSnmpLib.Full.dll
+D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRead.RO\WinService.DAL\bin\Debug\WinService.Utilities.pdb
+D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRead.RO\WinService.DAL\bin\Debug\WinService.DTO.pdb
+D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRead.RO\WinService.DAL\bin\Debug\SharpSnmpLib.Portable.xml
+D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRead.RO\WinService.DAL\bin\Debug\SharpSnmpLib.Full.xml
+D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRead.RO\WinService.DAL\bin\Debug\System.Data.SQLite.dll
+D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRead.RO\WinService.DAL\bin\Debug\System.Data.SQLite.EF6.dll
+D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRead.RO\WinService.DAL\bin\Debug\System.Data.SQLite.Linq.dll
+D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRead.RO\WinService.DAL\bin\Debug\System.Data.SQLite.xml

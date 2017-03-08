@@ -19,5 +19,8 @@ namespace WinService.DTO
         public static String Oid_serial { get; set; }
         public static String Id_cliente { get; set; }
         public static String TimeOut { get; set; }
+        public static String Path_Cert { get; set; }
+        public static String Nr_contrato { get; set; }
+        public static String IP_LIC { get; set; }
     }
 }

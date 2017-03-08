@@ -8,10 +8,13 @@ using WinService.Repository;
 using WinService.Utilities;
 using System.Threading;
 
+
 namespace WinService.Business
 {
     public class LeituraBusiness
     {
+        LogEvento _log = new LogEvento();
+
         //Camada de negocios do objeto leitura
         Snmp _SNMP = new Snmp();
         EquipamentosBusiness _BLLEquipamentos = new EquipamentosBusiness();
@@ -20,29 +23,23 @@ namespace WinService.Business
 
         public void Grava_Leitura_No_DB(IEnumerable<OID_Leitura> Leituras_Dispositivos)
         {
-            
 
-            foreach (var leitura in Leituras_Dispositivos)
+            var Data_leitura_inserida = _repository_leitura.Insere_LeituraLista(Leituras_Dispositivos);
+
+
+
+
+
+            if (Data_leitura_inserida != null)
             {
-            
-                var Data_leitura_inserida = _repository_leitura.Insere_Leitura(leitura);
 
-                if (Data_leitura_inserida != null)
-                {
-                   
-                    // Atualiza a data da leitura
+                // Atualiza a data da leitura
 
-                  var retornoDaatualizacao =  _repository_configuracao.AtualizaDataLeituraEmConfiguracaoCliente(Global.Id_cliente, Data_leitura_inserida, null);
-                }
+                var retornoDaatualizacao = _repository_configuracao.AtualizaDataLeituraEmConfiguracaoCliente(Global.Id_cliente, Data_leitura_inserida, null);
 
-                //criar um log de falha no caso de erro na inserção
-
+                //    _log.WriteEntry("Leitura inserida em: " + Data_leitura_inserida.ToString(), System.Diagnostics.EventLogEntryType.SuccessAudit);
 
             }
-
-
-
-
 
 
         }

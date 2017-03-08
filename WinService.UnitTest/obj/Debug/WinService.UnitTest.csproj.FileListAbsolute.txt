@@ -34,3 +34,4 @@ D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRe
 D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRead.RO\WinService.UnitTest\bin\Debug\nunit.framework.xml
 D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRead.RO\WinService.UnitTest\obj\Debug\WinService.UnitTest.dll
 D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRead.RO\WinService.UnitTest\obj\Debug\WinService.UnitTest.pdb
+D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRead.RO\WinService.UnitTest\bin\Debug\WinService.UnitTest.dll.config

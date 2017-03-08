@@ -55,3 +55,11 @@ D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRe
 D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRead.RO\WinService.WindowsService\bin\Debug\WinService.DAL.dll
 D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRead.RO\WinService.WindowsService\bin\Debug\MySql.Data.dll
 D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRead.RO\WinService.WindowsService\bin\Debug\WinService.DAL.pdb
+D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRead.RO\WinService.WindowsService\bin\Debug\EntityFramework.dll
+D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRead.RO\WinService.WindowsService\bin\Debug\EntityFramework.SqlServer.dll
+D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRead.RO\WinService.WindowsService\bin\Debug\System.Data.SQLite.dll
+D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRead.RO\WinService.WindowsService\bin\Debug\System.Data.SQLite.EF6.dll
+D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRead.RO\WinService.WindowsService\bin\Debug\System.Data.SQLite.Linq.dll
+D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRead.RO\WinService.WindowsService\bin\Debug\EntityFramework.xml
+D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRead.RO\WinService.WindowsService\bin\Debug\EntityFramework.SqlServer.xml
+D:\googleDrive\Sistemas\Desenvolvimento\Reis\ServicoLeituraContadores\AgentOidRead.RO\WinService.WindowsService\bin\Debug\System.Data.SQLite.xml

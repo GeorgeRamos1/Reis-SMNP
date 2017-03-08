@@ -11,10 +11,13 @@ using Lextm.SharpSnmpLib.Messaging;
 using System.Net.NetworkInformation;
 using Mono.Options;
 using WinService.DTO;
+using WinService.Utilities;
+
 namespace WinService.Utilities
 {
     public class Snmp
     {
+        LogEvento _log = new LogEvento();
         public OidDTO capturaOID(String Ip, String Oid)
         {
             OidDTO dispositivoDTO = new OidDTO();
@@ -47,11 +50,11 @@ namespace WinService.Utilities
                     dispositivoDTO.Valor_Byte = AddressBytesToString(result[0].Data.ToBytes());
 
                 }
-                catch (Exception )
+                catch (Exception ex)
                 {
                    // throw new Exception("Erro ao Inserir Modelo " + ex.Message);
                     dispositivoDTO.Valor = "Nulo";
-
+                //    _log.WriteEntry("Erro ao Ler SMNP em Snmp :" + ex.Message.ToString(), System.Diagnostics.EventLogEntryType.Error);
                 }
 
 
