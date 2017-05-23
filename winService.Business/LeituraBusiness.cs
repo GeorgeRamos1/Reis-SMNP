@@ -23,25 +23,30 @@ namespace WinService.Business
 
         public void Grava_Leitura_No_DB(IEnumerable<OID_Leitura> Leituras_Dispositivos)
         {
+            var nr_dispo = Leituras_Dispositivos.Count();
 
-            var Data_leitura_inserida = _repository_leitura.Insere_LeituraLista(Leituras_Dispositivos);
-
-
-
-
-
-            if (Data_leitura_inserida != null)
+           
+            if (nr_dispo > 0)
             {
+                _log.WriteEntry("Nr de Dispositivos Enviados para inserir: " + nr_dispo, System.Diagnostics.EventLogEntryType.Warning);
 
-                // Atualiza a data da leitura
+                var Data_leitura_inserida = _repository_leitura.Insere_LeituraLista(Leituras_Dispositivos);
 
-                var retornoDaatualizacao = _repository_configuracao.AtualizaDataLeituraEmConfiguracaoCliente(Global.Id_cliente, Data_leitura_inserida, null);
 
-                //    _log.WriteEntry("Leitura inserida em: " + Data_leitura_inserida.ToString(), System.Diagnostics.EventLogEntryType.SuccessAudit);
+
+
+                if (Data_leitura_inserida != null)
+                {
+
+                    // Atualiza a data da leitura
+
+                    var retornoDaatualizacao = _repository_configuracao.AtualizaDataLeituraEmConfiguracaoCliente(Global.Id_cliente, Data_leitura_inserida, null);
+
+                    //    _log.WriteEntry("Leitura inserida em: " + Data_leitura_inserida.ToString(), System.Diagnostics.EventLogEntryType.SuccessAudit);
+
+                }
 
             }
-
-
         }
 
 
@@ -53,6 +58,9 @@ namespace WinService.Business
 
             //procura impressoras na rede
             var Lista_dispositivo_Encontrados = _BLLEquipamentos.Captura_Ip_Dipositivos_Na_rede();
+
+         
+
 
             //Valida os OIDs na tabela oids, se não existir usa oid padrão
             var Lista_OIDs_Capturados = _BLLEquipamentos.Captura_OID_Dispositivo(Lista_dispositivo_Encontrados);
@@ -68,6 +76,8 @@ namespace WinService.Business
 
         public IEnumerable<OID_Leitura> Busca_Valores_De_OID_Dispositivos(IEnumerable<OIDs_Dispositivo> Lista_Dispositivo)
         {
+            
+
 
             var ListaOidLidos = new List<OID_Leitura>();
 
@@ -87,6 +97,8 @@ namespace WinService.Business
                 Lista_OIDs.Id_equipamento = Dispositivo.Id_equipamento;
                 ListaOidLidos.Add(Lista_OIDs);
             }
+
+          
 
             return ListaOidLidos;
         }

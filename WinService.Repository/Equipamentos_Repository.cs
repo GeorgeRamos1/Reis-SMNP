@@ -92,7 +92,8 @@ namespace WinService.Repository
                     SrtSql += "numero_serie,";
                     SrtSql += "ip_atual,";
                     SrtSql += "contrato,";
-                    SrtSql += "mac_address)";
+                    SrtSql += "mac_address,";
+                    SrtSql += "data_criacao)";
                     SrtSql += "VALUES ";
 
                     SrtSql += " ('" + Guid.NewGuid() + "',";
@@ -101,7 +102,8 @@ namespace WinService.Repository
                     SrtSql += " @v4,";
                     SrtSql += " @v5,";
                     SrtSql += " @v6,";
-                    SrtSql += " @v7)";
+                    SrtSql += " @v7,";
+                    SrtSql += " @v8)";
 
                     Cmd.CommandText = SrtSql;
 
@@ -111,7 +113,7 @@ namespace WinService.Repository
                     Cmd.Parameters.AddWithValue("@v5", vDadosDispositivo.IP);
                     Cmd.Parameters.AddWithValue("@v6", vDadosDispositivo.maq_contrato);
                     Cmd.Parameters.AddWithValue("@v7", vDadosDispositivo.Mac_address);
-
+                    Cmd.Parameters.AddWithValue("@v8", DateTime.Now.ToString());
                     Cmd.ExecuteNonQuery();
 
                     String str2 = "SELECT id FROM equipamentos WHERE numero_serie='" + vDadosDispositivo.Nr_Serie + "'";

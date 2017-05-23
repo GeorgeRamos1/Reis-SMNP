@@ -8,6 +8,7 @@ using WinService.Utilities;
 using System.Configuration;
 using System.Data.SQLite;
 using System.Data;
+using WinService.DTO;
 
 namespace WinService.DAL
 {
@@ -33,8 +34,10 @@ namespace WinService.DAL
 
 
                 //Servidor - captura do arquivo de configuração
-                Conn_str =  ConfigurationManager.AppSettings["Conn_db_SQLite"];
+                //Conn_str =  ConfigurationManager.AppSettings["Conn_db_SQLite"];
 
+                Conn_str = "Data Source=" + Global.Path_Cert + "\\tarifador.db;Version=3;";
+                    
                 Con = new SQLiteConnection(Conn_str);
                 Con.Open();
 

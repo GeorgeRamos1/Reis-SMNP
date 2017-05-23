@@ -16,7 +16,7 @@ namespace WinService.WindowsService
         {
 
 
-//#if (!DEBUG)  
+#if (!DEBUG)  
 
             ServiceBase[] ServicesToRun;
             ServicesToRun = new ServiceBase[] 
@@ -24,7 +24,7 @@ namespace WinService.WindowsService
                 new Service1() 
             };
             ServiceBase.Run(ServicesToRun);
-//#else
+#else
 
 
             // Debug code: Permite debugar um código sem se passar por um Windows Service.
@@ -32,17 +32,18 @@ namespace WinService.WindowsService
 
             // Depois de debugar basta compilar em Release e instalar para funcionar normalmente.
 
-//          Service1 service = new Service1();
+          Service1 service = new Service1();
 
             // Chamada do método para Debug.
+          service.InicializaVariaveisGlobais();
 
-//         service.varrerArede();
+         service.varrerArede();
 
             // Coloque sempre um breakpoint para o ponto de parada do código.
 
-//           System.Threading.Thread.Sleep(System.Threading.Timeout.Infinite);
+           System.Threading.Thread.Sleep(System.Threading.Timeout.Infinite);
 
-//#endif
+#endif
             
         }
     }

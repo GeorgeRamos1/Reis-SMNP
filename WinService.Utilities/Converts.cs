@@ -39,5 +39,14 @@ namespace WinService.Utilities
             return dataTable;
         }
 
+
+        public static string convertIp(String ip)
+        {
+            var resp = ip.Split('.');
+
+
+            return Convert.ToInt32(resp[0]).ToString() + "." + Convert.ToInt32(resp[1]).ToString() + "." + Convert.ToInt32(resp[02]).ToString() + "." + Convert.ToInt32(resp[03]).ToString();
+        }
+
     }
 }

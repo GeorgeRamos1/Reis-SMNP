@@ -94,6 +94,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConfiguracaoRepository.cs" />
     <Compile Include="Configuracao_Repository.cs" />
     <Compile Include="Equipamentos_Repository.cs" />
     <Compile Include="Leitura_Repository.cs" />

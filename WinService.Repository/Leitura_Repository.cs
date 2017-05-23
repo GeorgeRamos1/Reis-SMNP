@@ -191,6 +191,8 @@ namespace WinService.Repository
                 {
                  resposta =   this.Insere_Leitura(item);
 
+                 _log.WriteEntry("Item Inserido :" + item.Id_equipamento.ToString() + " Em: " + resposta.ToString(), System.Diagnostics.EventLogEntryType.Warning);
+
 
                 }
 

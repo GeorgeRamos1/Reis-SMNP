@@ -108,6 +108,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\WinService.DTO\WinService.DTO.csproj">
+      <Project>{c3f7fe1e-9317-4709-a836-68262d58b2b4}</Project>
+      <Name>WinService.DTO</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WinService.Utilities\WinService.Utilities.csproj">
       <Project>{dd65cb46-08ae-4811-98ab-afcc389ca356}</Project>
       <Name>WinService.Utilities</Name>

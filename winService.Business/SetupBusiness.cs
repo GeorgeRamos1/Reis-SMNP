@@ -10,7 +10,8 @@ using System.Threading;
 using System.Net;
 using System.Windows.Forms;
 
-
+using WinService.Repository;
+using WinService.Utilities;
 
 namespace WinService.Business
 {
@@ -25,66 +26,79 @@ namespace WinService.Business
 
         Arquivos _UtilArq = new Arquivos();
 
+
+
         //Valida o licenciamento do programa
         public bool LicenciaPRG()
         {
-            // Busca os Arquivos de Envio e retorno
-
             Boolean Status = false;
-            String StrREQ = Global.Path_Cert + "Licenca.REQ";
-            String StrLIC = Global.Path_Cert + "Licenca.LIC";
-            String IP = Global.IP_LIC;
-
-            var ExisteREQ = File.Exists(StrREQ);
-            var ExisteLIC = File.Exists(StrLIC);
-
-            //Define a linha a encriptar
-            //nomedamaquina;dominiodamaquina;ip;dataehoradageração;nrcontrato;true
-            String NomeDaMaquina = SystemInformation.ComputerName;
-            String DominioUsuario = Environment.UserDomainName;
-
-
-
-            TripleDES.setPassword("654321");
-
-            if (ExisteLIC)
+            // Busca os Arquivos de Envio e retorno
+            try
             {
-                // Se o Arq LIC Existe testa sua validade
 
-                var textoLIC = _UtilArq.LeArquivo(StrLIC);
-                //nomedamaquina;dominiodamaquina;ip;dataehoradageração;nrcontrato;validade
-                var textoLICDectyp = TripleDES.Decrypt(textoLIC);
+               
+                String StrREQ = Global.Path_Cert + "\\Licenca.REQ";
+                String StrLIC = Global.Path_Cert + "\\Licenca.LIC";
+                String IP = Global.IP_LIC;
 
-                string[] Certificado = textoLICDectyp.Split(';');
+                var ExisteREQ = File.Exists(StrREQ);
+                var ExisteLIC = File.Exists(StrLIC);
 
-                String NomePCLic = Certificado[0];
-                String DominioCLic = Certificado[1];
-                String IPLiC = Certificado[2];
-                String DataCriacaoLic = Certificado[3];
-                String NrContratoLic = Certificado[4];
-                String ValidadeLic = Certificado[5];
+                //Define a linha a encriptar
+                //nomedamaquina;dominiodamaquina;ip;dataehoradageração;nrcontrato;true
+                String NomeDaMaquina = SystemInformation.ComputerName;
+                String DominioUsuario = Environment.UserDomainName;
+               
 
 
-                // Se o Ip existir Valida caso contrario desabilita
-                if (this.ValidaIp(IPLiC))
+                TripleDES.setPassword("654321");
+
+                if (ExisteLIC)
                 {
-                    //Valida o nome da maquina
-                    if (NomePCLic == NomeDaMaquina)
-                    {
-                       
-                        //VAlida o dominio da maquina
-                        if (DominioCLic == DominioUsuario)
-                        {
-                            
+                    // Se o Arq LIC Existe testa sua validade
 
-                            //Valida validade da licença
-                            if (Convert.ToDateTime(ValidadeLic) >= DateTime.Now)
+                    var textoLIC = _UtilArq.LeArquivo(StrLIC);
+                    //nomedamaquina;dominiodamaquina;ip;dataehoradageração;nrcontrato;validade
+                    var textoLICDectyp = TripleDES.Decrypt(textoLIC);
+
+                    string[] Certificado = textoLICDectyp.Split(';');
+
+                    String NomePCLic = Certificado[0];
+                    String DominioCLic = Certificado[1];
+                    String IPLiC = Certificado[2];
+                    String DataCriacaoLic = Certificado[3];
+                    String NrContratoLic = Certificado[4];
+                    String ValidadeLic = Certificado[5];
+
+
+                    // Se o Ip existir Valida caso contrario desabilita
+                    if (this.ValidaIp(IPLiC))
+                    {
+                        //Valida o nome da maquina
+                        if (NomePCLic == NomeDaMaquina)
+                        {
+
+                            //VAlida o dominio da maquina
+                            if (DominioCLic == DominioUsuario)
                             {
-                                Status = true;
+
+
+                                //Valida validade da licença
+                                if (Convert.ToDateTime(ValidadeLic) >= DateTime.Now)
+                                {
+                                    Status = true;
+                                }
+                                else
+                                {
+                                    _log.WriteEntry("Erro ao validar Licença: Licença Vencida: " + ValidadeLic, System.Diagnostics.EventLogEntryType.Error);
+                                }
+
+
+
                             }
                             else
                             {
-                                _log.WriteEntry("Erro ao validar Licença: Licença Vencida: " + ValidadeLic, System.Diagnostics.EventLogEntryType.Error);
+                                _log.WriteEntry("Erro ao validar Licença: Domínio PC: " + DominioUsuario + " Está Incorreto", System.Diagnostics.EventLogEntryType.Error);
                             }
 
 
@@ -92,7 +106,7 @@ namespace WinService.Business
                         }
                         else
                         {
-                            _log.WriteEntry("Erro ao validar Licença: Domínio PC: " + DominioUsuario + " Está Incorreto", System.Diagnostics.EventLogEntryType.Error);
+                            _log.WriteEntry("Erro ao validar Licença: Nome PC: " + NomeDaMaquina + " Está Incorreto", System.Diagnostics.EventLogEntryType.Error);
                         }
 
 
@@ -100,36 +114,34 @@ namespace WinService.Business
                     }
                     else
                     {
-                        _log.WriteEntry("Erro ao validar Licença: Nome PC: " + NomeDaMaquina + " Está Incorreto", System.Diagnostics.EventLogEntryType.Error);
+                        _log.WriteEntry("Erro ao validar Licença: IP da Maquina Invalido", System.Diagnostics.EventLogEntryType.Error);
+
                     }
 
 
 
+
                 }
-                else
+                else// Arquivo LIC não existe assim cria-se o Arquivo REQ
                 {
-                    _log.WriteEntry("Erro ao validar Licença: IP da Maquina Ivalido", System.Diagnostics.EventLogEntryType.Error);
+
+
+
+
+
+
+                    String linha = NomeDaMaquina.Trim() + ";" + DominioUsuario.Trim() + ";" + IP + ";" + DateTime.Now.ToString() + ";" + Global.Nr_contrato.Trim() + ";true";
+                    String LinhaCyto = TripleDES.Encrypt(linha);
+
+                    //Gera o Arquivo REQ
+                    _UtilArq.EscreveArquivo(StrREQ, LinhaCyto);
 
                 }
-
-
-
-
             }
-            else// Arquivo LIC não existe assim cria-se o Arquivo REQ
+            catch (Exception ex)
             {
 
-
-
-
-
-
-                String linha = NomeDaMaquina.Trim() + ";" + DominioUsuario.Trim() + ";" + IP + ";" + DateTime.Now.ToString() + ";" + Global.Nr_contrato.Trim() + ";true";
-                String LinhaCyto = TripleDES.Encrypt(linha);
-
-                //Gera o Arquivo REQ
-                _UtilArq.EscreveArquivo(StrREQ, LinhaCyto);
-
+                _log.WriteEntry("Erro Na validação da licença: " + ex.ToString(), System.Diagnostics.EventLogEntryType.Error);
             }
 
             //    _log.WriteEntry("Arquivo Licenca Não Encontrado", System.Diagnostics.EventLogEntryType.Error);
@@ -158,6 +170,14 @@ namespace WinService.Business
             return IpValidado;
         }
 
+
+        ConfiguracaoRepository _configuracao = new ConfiguracaoRepository();
+
+        public ConfiguracaoDTO pesquisaConfiguracao()
+        {
+            return _configuracao.ListarConfiguracao(1);
+
+        }
 
 
     }

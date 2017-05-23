@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using WinService.DTO;
 using WinService.Repository;
 using WinService.Utilities;
+using System.Configuration;
 
 namespace WinService.Business
 {
@@ -17,53 +18,129 @@ namespace WinService.Business
         Modelos_Repository _ModeloRepository = new Modelos_Repository();
         Snmp _SNMP = new Snmp();
 
+        LogEvento _log = new LogEvento();
         //Busca os Ip que estão respondendo na rede como impressora
         public IEnumerable<EquipamentosDTO> Captura_Ip_Dipositivos_Na_rede()
         {
             //Captura o range de IP
-            String vRange = Global.Faixa_Ip;
-            String vOid_Serial = Global.Oid_serial ; //"1.3.6.1.2.1.43.5.1.1.17.1"
-            String vOid_Mac = Global.Oid_mac; // "1.3.6.1.2.1.2.2.1.6.1";
+         //   String vRange = Global.Faixa_Ip;
+
+
+
+            String vOid_Serial = Global.Oid_serial; //"1.3.6.1.2.1.43.5.1.1.17.1"
+         
 
             String vOid_Model = Global.Oid_modelo; // "1.3.6.1.2.1.25.3.2.1.3.1";
             String vOid_prn = Global.Oid_tipo_impressora; // "1.3.6.1.2.1.43.5.1.1.1.1";
 
 
             String vIp;
+
             var lista_Dispostivos_encontrados = new List<EquipamentosDTO>();
 
             var dt_inicio = DateTime.Now;
-            for (int i = Global.Inicio_faixa; i <Global.Fim_faixa; i++)
+
+            // Captura os ranges de IP no App.Config
+
+      //      var range = ConfigurationManager.AppSettings["range_ip"];
+            var range = Global.Faixa_Ip;
+
+            string[] str_array = range.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+
+
+
+
+            foreach (var rangeIP in str_array)
             {
+                Int32 vFimFaixa = Convert.ToInt32(rangeIP.Substring(rangeIP.IndexOf("-") + 1));
+                String[] rg = rangeIP.ToString().Split('.');
 
-                vIp = vRange + i.ToString();
+               String vRange = rg[0] + "." + rg[1] + "." + rg[2] + ".";
 
-                var result = _SNMP.capturaOID(vIp, vOid_prn);
 
-                if (String.IsNullOrEmpty(result.Id) == false)
+                Int32 vInicioFaixa = Convert.ToInt32(rg[3].Substring(0, rg[3].IndexOf("-")));
+
+                _log.WriteEntry("Range de Ip a Ler: " + vRange + " Inicio: " + vInicioFaixa + " Fim: " + vFimFaixa, System.Diagnostics.EventLogEntryType.Information);
+
+
+                try
                 {
-                    var lista_pesq = new EquipamentosDTO();
+                    for (int i = vInicioFaixa; i < vFimFaixa; i++)
+                    {
+                        String vOid_Mac = Global.Oid_mac; // "1.3.6.1.2.1.2.2.1.6.1";
+                        vIp = vRange + i.ToString();
+
+                        //vIp = "10.0.0.55";
+
+                        var result = _SNMP.capturaOID(vIp, vOid_prn);
+
+                        if (String.IsNullOrEmpty(result.Id) == false)
+                        {
+                            var lista_pesq = new EquipamentosDTO();
 
 
-                    var vNrSerie = _SNMP.capturaOID(vIp, vOid_Serial);
+
+                            var vNrSerie = _SNMP.capturaOID(vIp, vOid_Serial);
+
+                            var VModel = _SNMP.capturaOID(vIp, vOid_Model);
+
+                            lista_pesq.IP = vIp;
+                            lista_pesq.Nr_Serie = vNrSerie.Valor;
+                            var vMac = _SNMP.capturaOID(vIp, vOid_Mac);
 
 
 
-                    var vMac = _SNMP.capturaOID(vIp, vOid_Mac);
-                    var VModel = _SNMP.capturaOID(vIp, vOid_Model);
+                            // Garante que se vier vazio atribui o valor = Nulo
+                            if (String.IsNullOrEmpty(vMac.Valor))
+                            {
+                                vMac.Valor = "Nulo";
 
-                    lista_pesq.IP = vIp;
-                    lista_pesq.Nr_Serie = vNrSerie.Valor;
-                    lista_pesq.Mac_address = vMac.Valor_Byte.Substring(6);
-                    lista_pesq.Modelo = VModel.Valor;
+                            }
 
 
-                    lista_Dispostivos_encontrados.Add(lista_pesq);
+                            //Se for nulo tenta o OID alternativo
+                            if (vMac.Valor == "Nulo")
+                            {
+                                vOid_Mac = "1.3.6.1.2.1.2.2.1.6.2";
+                                vMac = _SNMP.capturaOID(vIp, vOid_Mac);
+                                //Se o OID alternativo for nulo set como nulo
+                                if (String.IsNullOrEmpty(vMac.Valor))
+                                {
+
+                                    vMac.Valor = "Nulo";
+                                }
+                            }
+
+
+                            if (vMac.Valor != "Nulo")
+                            {
+                                lista_pesq.Mac_address = vMac.Valor_Byte.Substring(6);
+
+                                lista_pesq.Modelo = VModel.Valor;
+
+
+
+
+
+                                lista_Dispostivos_encontrados.Add(lista_pesq);
+                            }
+                            else
+                            {
+                                _log.WriteEntry("Mac Adress Não encontrado para o IP:" + vIp + " Verificar OID.", System.Diagnostics.EventLogEntryType.Error);
+                            }
+                        }
+
+                    }
+
+                }
+                catch (Exception ex)
+                {
+
+                    _log.WriteEntry("Erro na varredura de IP em EquipamentoBusiness Ip Ini:" + vInicioFaixa + " Ip Fim:" + vFimFaixa + " Faixa:" + vRange + " Menssagem de ERRO: " + ex.Message, System.Diagnostics.EventLogEntryType.Error);
                 }
 
-
-
             }
+
             var dt_Fim = DateTime.Now;
 
             var Tempo_loop = dt_Fim - dt_inicio;
@@ -74,18 +151,18 @@ namespace WinService.Business
         // Para a lista de dispositivos encontrados buscar o grupo de OIDs Correspondentes para leitura
         public IEnumerable<OIDs_Dispositivo> Captura_OID_Dispositivo(IEnumerable<EquipamentosDTO> Lista_Dispositivo)
         {
+            var nr_dispo = Lista_Dispositivo.Count();
 
-          //  var lista_OID_Todos_Dispositivos = new List<OIDs_Dispositivo>();
+            //  var lista_OID_Todos_Dispositivos = new List<OIDs_Dispositivo>();
             var lista_OID_Lidos = new List<OIDs_Dispositivo>();
+
             foreach (var Dispositivo in Lista_Dispositivo)
             {
-
-                
-
                 // PEsquisa se o Dispositivo Existe na lista de Equipamentos/Matriz/Modelo e se pertence a Empresa
                 //Se não existir utiliza-se da matriz padrão
 
                 var Dispositivos_Encontrados = _repositoryDispositivo.getOIDsDispositivo(Dispositivo.IP, Dispositivo.Mac_address);
+
 
                 //Caso não seja encontrado nenhum registro, criar com  OID padrão para leitura.
                 //Salva registro no cadastro de equipamentos
@@ -95,18 +172,20 @@ namespace WinService.Business
                     var Id_Dispositivo_Retornado = Insere_Equipamento(Dispositivo.IP, Dispositivo.Modelo, Dispositivo.Nr_Serie, "NAO", Dispositivo.Mac_address);
 
 
-                    lista_OID_Lidos = new List<OIDs_Dispositivo> { new OIDs_Dispositivo { IP = Dispositivo.IP, Nr_Serie = Dispositivo.Nr_Serie, OID =Global.Oid_contador_geral,  maq_contrato = "NAO", Id_equipamento = Id_Dispositivo_Retornado, Mac_address = Dispositivo.Mac_address } };
+                    lista_OID_Lidos = new List<OIDs_Dispositivo> { new OIDs_Dispositivo { IP = Dispositivo.IP, Nr_Serie = Dispositivo.Nr_Serie, OID = Global.Oid_contador_geral, maq_contrato = "NAO", Id_equipamento = Id_Dispositivo_Retornado, Mac_address = Dispositivo.Mac_address } };
                     //"1.3.6.1.2.1.43.10.2.1.4.1.1",
 
                 }
                 else
                 {
 
+
                     foreach (var item_dispositivo in Dispositivos_Encontrados)
                     {
+
                         var item_capturado = new OIDs_Dispositivo();
                         // se não encontrar o OID de contador na tabela, usa o oid de contador geral
-                       
+
                         item_capturado.IP = item_dispositivo.IP;
                         item_capturado.Nr_Serie = item_dispositivo.Nr_Serie;
                         item_capturado.Mac_address = item_dispositivo.Mac_address;
@@ -122,15 +201,17 @@ namespace WinService.Business
 
                         lista_OID_Lidos.Add(item_capturado);
                     }
-
-                    
-
                 }
 
 
-               // lista_OID_Todos_Dispositivos.AddRange(lista_OID_Lidos);
+                // lista_OID_Todos_Dispositivos.AddRange(lista_OID_Lidos);
             }
 
+            var nr_disp_lidos = lista_OID_Lidos.Count();
+            if (nr_disp_lidos != nr_dispo)
+            {
+                _log.WriteEntry("Faltam registros de Equipamentos no DB: Equipamentos lidos na Rede " + nr_dispo + "  Equipamentos no DB: " + nr_disp_lidos, System.Diagnostics.EventLogEntryType.Warning);
+            }
 
             return lista_OID_Lidos;
 
