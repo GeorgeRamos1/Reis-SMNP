@@ -29,14 +29,14 @@ namespace WinService.WindowsService
         {
             InitializeComponent();
 
-       //     this.InicializaVariaveisGlobais();
+            //     this.InicializaVariaveisGlobais();
         }
 
         protected override void OnStart(string[] args)
         {
 
-            EventLog.WriteEntry("Serviço captura de OID iniciado", EventLogEntryType.Warning);
-
+            // EventLog.WriteEntry("Serviço captura de OID iniciado", EventLogEntryType.Warning);
+            _log.WriteEntry("Serviço captura de OID iniciado", System.Diagnostics.EventLogEntryType.Information);
             //cria o que será executado
             ThreadStart iniciarExecucao = new ThreadStart(varrerArede);
 
@@ -60,13 +60,10 @@ namespace WinService.WindowsService
         public void varrerArede()
         {
             _log.WriteEntry("Varredura da Rede Iniciada :", System.Diagnostics.EventLogEntryType.Information);
+
             while (true)
             {
                 //    var Interval = _BLLSetup.Interval_Varredura();
-
-            
-
-                Thread.Sleep(Global.Ciclo);
 
                 this.InicializaVariaveisGlobais();
 
@@ -81,21 +78,29 @@ namespace WinService.WindowsService
 
                     //Insere na Tabela
                     _BllLeitura.Grava_Leitura_No_DB(Lista_Capturada);
+
+
+                    //atualiza o arquivo backup
+                    var ret = _Arquivos.BackupDb();
+
+                    if (ret != "OK")
+                    {
+                        _log.WriteEntry("Backup do DB não foi realizado :", System.Diagnostics.EventLogEntryType.Error);
+                    }
                 }
                 else
                 {
                     this.paraServico();
                     _log.WriteEntry("Varredura Interrompida por falta de licença :", System.Diagnostics.EventLogEntryType.Information);
                 }
-               
+                Thread.Sleep(Global.Ciclo);
             }
-
 
         }
 
         public void InicializaVariaveisGlobais()
         {
-          
+
             //define o caminho do DB
             if (String.IsNullOrEmpty(_Arquivos.CaminhoAppData()))
             {
@@ -105,21 +110,15 @@ namespace WinService.WindowsService
 
             else
             {
-                Global.Path_Cert = _Arquivos.CaminhoAppData();;
+                Global.Path_Cert = _Arquivos.CaminhoAppData(); ;
             }
-           
 
+            // captura os dados de configuração da tabela
             var config = _BLLSetup.pesquisaConfiguracao();
 
             if (config.Id_Cliente != "Erro")
             {
-
                 Global.Faixa_Ip = config.Range_Ip;
-
-
-
-
-
                 //Tempo do ciclo de leitura 1s=1000
                 var Interval = config.Ciclo_Leitura;
 
@@ -131,7 +130,6 @@ namespace WinService.WindowsService
                 {
                     Global.Ciclo = Convert.ToInt32(Interval);
                 }
-
 
                 //Oid do Numero Serie
                 var Oid_Sn = ConfigurationManager.AppSettings["oid_serial"];
@@ -188,8 +186,6 @@ namespace WinService.WindowsService
                     Global.Oid_contador_geral = Oid_contador;
                 }
 
-
-
                 //Id do cliente
                 var Id_Cliente1 = config.Id_Cliente;
 
@@ -214,7 +210,6 @@ namespace WinService.WindowsService
                     Global.TimeOut = Tempo_espera;
                 }
 
-
                 //String de conexão
                 //var conn = ConfigurationManager.AppSettings["Conn_db_SQLite"];
                 //if (String.IsNullOrEmpty(conn))
@@ -223,32 +218,25 @@ namespace WinService.WindowsService
 
                 //}
 
-               
-
                 Global.Nr_contrato = config.Nr_Contrato;
 
                 Global.IP_LIC = Converts.convertIp(config.Ip_Pc);
-
-               
             }
             else
             {
                 EventLog.WriteEntry("Dados de configuração não encontrados", EventLogEntryType.Warning);
                 this.paraServico();
-
             }
-
-
 
         }
 
         public void InicializaVariaveisGlobais_arqapp()
         {
-            var caminho = _Arquivos.CaminhoAppData() ;
+            var caminho = _Arquivos.CaminhoAppData();
 
             //Tempo do ciclo de leitura 1s=1000
             var Interval = ConfigurationManager.AppSettings["ciclo"];
-          
+
             if (String.IsNullOrEmpty(Interval))
             {
                 Global.Ciclo = 1000;
@@ -372,14 +360,14 @@ namespace WinService.WindowsService
             {
                 Global.TimeOut = Tempo_espera;
             }
-           
-            
+
+
             //String de conexão
             //var conn = ConfigurationManager.AppSettings["Conn_db_SQLite"];
             //if (String.IsNullOrEmpty(conn))
             //{
             //    EventLog.WriteEntry("String de conexão não definida", EventLogEntryType.Warning);
-               
+
             //}
 
             if (String.IsNullOrEmpty(_Arquivos.CaminhoAppData()))

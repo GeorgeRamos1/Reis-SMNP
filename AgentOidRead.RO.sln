@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinService.Business", "winS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinService.ConectarDados", "WinService.DAL\WinService.ConectarDados.csproj", "{7E40391E-42E3-454E-9CBD-96C65C9C5C7E}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Camada De Acesso aos Daods(DAL)", "Camada De Acesso aos Daods(DAL)", "{DE486F38-32D9-4F30-95B6-681E5DC718F8}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Camada De Acesso aos Dados(DAL)", "Camada De Acesso aos Dados(DAL)", "{DE486F38-32D9-4F30-95B6-681E5DC718F8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Camada De Negocios (BLL)", "Camada De Negocios (BLL)", "{645C4486-963F-4C85-BE4E-82AC0D2DDFF0}"
 EndProject

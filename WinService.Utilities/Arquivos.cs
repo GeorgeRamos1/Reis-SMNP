@@ -72,7 +72,31 @@ namespace WinService.Utilities
            
         }
 
+        public String BackupDb()
+        {
+            String resposta = "OK";
+            try
+            {
+                String caminho = this.CaminhoAppData();
+                String targetPath = caminho + @"\tarifador.bk";
 
+                if (System.IO.File.Exists(targetPath))
+                {
+                    System.IO.File.Delete(targetPath);
+                }
+               
+
+                //copia para o local com o nome alterado
+                System.IO.File.Copy(caminho + @"\tarifador.db", targetPath);
+            }
+            catch (Exception ex)
+            {
+                _log.WriteEntry("Backup ERRO :"+ex.Message.ToString(), System.Diagnostics.EventLogEntryType.Error);
+                resposta = "ERRO";
+            }
+
+            return resposta;
+        }
     }
 
 

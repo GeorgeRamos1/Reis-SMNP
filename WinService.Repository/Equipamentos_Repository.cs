@@ -17,12 +17,16 @@ namespace WinService.Repository
         LogEvento _log = new LogEvento();
 
 
-        public IEnumerable<OIDs_Dispositivo> getOIDsDispositivo(String vIp, String vMacAddress)
+        public IEnumerable<OIDs_Dispositivo> getOIDsDispositivo(String vIp, String vMacAddress,String nserie)
         {
    
 
             String Str = "SELECT Id,numero_serie,OID  FROM listar_dispositivos";
             Str += " WHERE  mac_address=@v1";
+            Str += " AND  IP=@v2";
+            Str += " AND  numero_serie=@v3";
+
+
          
             var lista_OID_Capturado = new List<OIDs_Dispositivo>();
 
@@ -33,7 +37,8 @@ namespace WinService.Repository
                 {
                     
                     Cmd.Parameters.AddWithValue("@v1", vMacAddress);
-
+                    Cmd.Parameters.AddWithValue("@v2", vIp);
+                    Cmd.Parameters.AddWithValue("@v3", nserie);
                     Dr = Cmd.ExecuteReader();
 
 

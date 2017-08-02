@@ -161,7 +161,7 @@ namespace WinService.Business
                 // PEsquisa se o Dispositivo Existe na lista de Equipamentos/Matriz/Modelo e se pertence a Empresa
                 //Se não existir utiliza-se da matriz padrão
 
-                var Dispositivos_Encontrados = _repositoryDispositivo.getOIDsDispositivo(Dispositivo.IP, Dispositivo.Mac_address);
+                var Dispositivos_Encontrados = _repositoryDispositivo.getOIDsDispositivo(Dispositivo.IP, Dispositivo.Mac_address, Dispositivo.Nr_Serie);
 
 
                 //Caso não seja encontrado nenhum registro, criar com  OID padrão para leitura.
